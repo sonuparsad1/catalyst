@@ -76,6 +76,18 @@ const Navbar = () => {
           {isAuthenticated ? (
             <>
               <NavLink
+                to="/tickets"
+                className={({ isActive }) =>
+                  `px-1 py-2 transition-colors duration-200 ${
+                    isActive
+                      ? "text-primary drop-shadow-[0_0_12px_rgba(198,168,107,0.35)]"
+                      : "text-muted hover:text-textPrimary"
+                  }`
+                }
+              >
+                My Tickets
+              </NavLink>
+              <NavLink
                 to="/dashboard"
                 className={({ isActive }) =>
                   `px-1 py-2 transition-colors duration-200 ${
@@ -90,6 +102,9 @@ const Navbar = () => {
               {user?.role === "admin" && (
                 <NavLink
                   to="/admin/dashboard"
+              {user?.role === "admin" ? (
+                <NavLink
+                  to="/admin/events"
                   className={({ isActive }) =>
                     `px-1 py-2 transition-colors duration-200 ${
                       isActive
@@ -101,6 +116,7 @@ const Navbar = () => {
                   Admin
                 </NavLink>
               )}
+              ) : null}
               <button
                 type="button"
                 onClick={handleLogout}
@@ -168,6 +184,19 @@ const Navbar = () => {
             {isAuthenticated ? (
               <>
                 <NavLink
+                  to="/tickets"
+                  onClick={handleLinkClick}
+                  className={({ isActive }) =>
+                    `rounded-lg px-3 py-2 transition-colors duration-200 ${
+                      isActive
+                        ? "text-primary drop-shadow-[0_0_12px_rgba(198,168,107,0.35)]"
+                        : "text-muted hover:text-textPrimary"
+                    }`
+                  }
+                >
+                  My Tickets
+                </NavLink>
+                <NavLink
                   to="/dashboard"
                   onClick={handleLinkClick}
                   className={({ isActive }) =>
@@ -183,6 +212,9 @@ const Navbar = () => {
                 {user?.role === "admin" && (
                   <NavLink
                     to="/admin/dashboard"
+                {user?.role === "admin" ? (
+                  <NavLink
+                    to="/admin/events"
                     onClick={handleLinkClick}
                     className={({ isActive }) =>
                       `rounded-lg px-3 py-2 transition-colors duration-200 ${
@@ -195,6 +227,7 @@ const Navbar = () => {
                     Admin
                   </NavLink>
                 )}
+                ) : null}
                 <button
                   type="button"
                   onClick={async () => {
