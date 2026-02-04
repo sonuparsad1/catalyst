@@ -2,9 +2,7 @@ import { createContext, useCallback, useEffect, useMemo, useState } from "react"
 
 const AuthContext = createContext(null);
 
-const apiBaseUrl =
-  import.meta.env.VITE_API_URL?.replace(/\/$/, "") ||
-  "http://localhost:5000";
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 const getAuthHeader = (token) =>
   token ? { Authorization: `Bearer ${token}` } : {};
@@ -17,7 +15,7 @@ export const AuthProvider = ({ children }) => {
   const fetchProfile = useCallback(
     async (activeToken) => {
       try {
-        const response = await fetch(`${apiBaseUrl}/auth/me`, {
+        const response = await fetch(`${API_BASE_URL}/auth/me`, {
           headers: {
             "Content-Type": "application/json",
             ...getAuthHeader(activeToken),
@@ -49,7 +47,7 @@ export const AuthProvider = ({ children }) => {
   }, [fetchProfile, token]);
 
   const login = useCallback(async (email, password) => {
-    const response = await fetch(`${apiBaseUrl}/auth/login`, {
+    const response = await fetch(`${API_BASE_URL}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -64,7 +62,7 @@ export const AuthProvider = ({ children }) => {
   }, [fetchProfile]);
 
   const register = useCallback(async (name, email, password) => {
-    const response = await fetch(`${apiBaseUrl}/auth/register`, {
+    const response = await fetch(`${API_BASE_URL}/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, password }),
@@ -77,7 +75,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = useCallback(async () => {
     try {
-      await fetch(`${apiBaseUrl}/auth/logout`, {
+      await fetch(`${API_BASE_URL}/auth/logout`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
