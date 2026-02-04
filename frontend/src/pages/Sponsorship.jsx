@@ -32,11 +32,11 @@ const Sponsorship = () => {
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12">
       <header className="space-y-3">
-        <p className="text-sm uppercase tracking-[0.4em] text-cyan-300">Sponsorship</p>
-        <h1 className="text-3xl font-semibold text-white sm:text-4xl">
+        <p className="text-sm uppercase tracking-[0.4em] text-primary">Sponsorship</p>
+        <h1 className="text-3xl font-semibold text-textPrimary sm:text-4xl">
           Partner With Catalyst Society
         </h1>
-        <p className="text-base text-slate-300">
+        <p className="text-base text-textSecondary">
           Support student innovation and connect with emerging leaders through our sponsor
           packages.
         </p>
@@ -46,21 +46,21 @@ const Sponsorship = () => {
         {plans.map((plan) => (
           <article
             key={plan.name}
-            className="flex h-full flex-col justify-between rounded-2xl border border-slate-800 bg-slate-900/60 p-6"
+            className="flex h-full flex-col justify-between rounded-2xl border border-border bg-surface p-6 shadow-sm shadow-black/20"
           >
             <div>
-              <h2 className="text-xl font-semibold text-white">{plan.name}</h2>
-              <p className="mt-2 text-2xl font-semibold text-cyan-300">{plan.price}</p>
-              <ul className="mt-4 space-y-3 text-sm text-slate-300">
+              <h2 className="text-xl font-semibold text-textPrimary">{plan.name}</h2>
+              <p className="mt-2 text-2xl font-semibold text-primary">{plan.price}</p>
+              <ul className="mt-4 space-y-3 text-sm text-textSecondary">
                 {plan.perks.map((perk) => (
                   <li key={perk} className="flex gap-2">
-                    <span className="mt-1 h-2 w-2 rounded-full bg-cyan-400" />
+                    <span className="mt-1 h-2 w-2 rounded-full bg-primary" />
                     {perk}
                   </li>
                 ))}
               </ul>
             </div>
-            <button className="mt-6 w-full rounded-full border border-cyan-400/60 px-4 py-2 text-sm font-semibold text-cyan-200 transition hover:bg-cyan-500 hover:text-slate-950">
+            <button className="mt-6 w-full rounded-full border border-border px-4 py-2 text-sm font-semibold text-textPrimary transition hover:bg-elevated">
               Become a Sponsor
             </button>
           </article>

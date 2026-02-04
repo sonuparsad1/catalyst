@@ -27,43 +27,43 @@ const upcomingEvents = [
 const Home = () => {
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-col gap-16 px-6 py-12">
-      <section className="grid gap-10 rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-10 shadow-xl shadow-slate-950/40 lg:grid-cols-[1.1fr_0.9fr]">
+      <section className="grid gap-10 rounded-3xl border border-border bg-surface p-10 shadow-sm shadow-black/30 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="space-y-6">
-          <p className="text-sm uppercase tracking-[0.4em] text-cyan-300">
+          <p className="text-sm uppercase tracking-[0.4em] text-primary">
             Ignite • Innovate • Lead
           </p>
-          <h1 className="text-4xl font-semibold text-white sm:text-5xl">
+          <h1 className="text-4xl font-semibold text-textPrimary sm:text-5xl">
             Catalyst Society
           </h1>
-          <p className="text-base text-slate-300">
+          <p className="text-base text-textSecondary">
             Catalyst Society is a student-led club accelerating innovation, leadership, and
             community impact through events, education, and hands-on experiences.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button className="rounded-full bg-cyan-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400">
+            <button className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-background transition hover:bg-primary/90">
               View Events
             </button>
-            <button className="rounded-full border border-slate-700 px-6 py-3 text-sm font-semibold text-white transition hover:border-cyan-400 hover:text-cyan-200">
+            <button className="rounded-full border border-border px-6 py-3 text-sm font-semibold text-textPrimary transition hover:bg-elevated">
               Join Catalyst Society
             </button>
-            <button className="rounded-full border border-cyan-400/60 px-6 py-3 text-sm font-semibold text-cyan-200 transition hover:bg-cyan-500 hover:text-slate-950">
+            <button className="rounded-full border border-primary/50 px-6 py-3 text-sm font-semibold text-primary transition hover:bg-elevated">
               Become a Sponsor
             </button>
           </div>
         </div>
-        <div className="space-y-6 rounded-2xl border border-slate-800 bg-slate-900/60 p-6">
-          <h2 className="text-lg font-semibold text-white">Why Catalyst</h2>
-          <ul className="space-y-4 text-sm text-slate-300">
+        <div className="space-y-6 rounded-2xl border border-border bg-elevated p-6">
+          <h2 className="text-lg font-semibold text-textPrimary">Why Catalyst</h2>
+          <ul className="space-y-4 text-sm text-textSecondary">
             <li className="flex gap-3">
-              <span className="mt-1 h-2 w-2 rounded-full bg-cyan-400" />
+              <span className="mt-1 h-2 w-2 rounded-full bg-primary" />
               Access mentorship, innovation labs, and leadership development programs.
             </li>
             <li className="flex gap-3">
-              <span className="mt-1 h-2 w-2 rounded-full bg-cyan-400" />
+              <span className="mt-1 h-2 w-2 rounded-full bg-primary" />
               Collaborate on interdisciplinary projects with peers and industry partners.
             </li>
             <li className="flex gap-3">
-              <span className="mt-1 h-2 w-2 rounded-full bg-cyan-400" />
+              <span className="mt-1 h-2 w-2 rounded-full bg-primary" />
               Build a portfolio through events, competitions, and community initiatives.
             </li>
           </ul>
@@ -72,8 +72,8 @@ const Home = () => {
 
       <section className="space-y-6">
         <div className="flex flex-col gap-2">
-          <h2 className="text-2xl font-semibold text-white">Upcoming Events</h2>
-          <p className="text-sm text-slate-400">
+          <h2 className="text-2xl font-semibold text-textPrimary">Upcoming Events</h2>
+          <p className="text-sm text-textSecondary">
             Join our upcoming sessions and meet innovators across campus.
           </p>
         </div>

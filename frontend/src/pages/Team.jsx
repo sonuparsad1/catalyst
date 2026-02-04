@@ -11,11 +11,11 @@ const Team = () => {
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12">
       <header className="space-y-3">
-        <p className="text-sm uppercase tracking-[0.4em] text-cyan-300">Team</p>
-        <h1 className="text-3xl font-semibold text-white sm:text-4xl">
+        <p className="text-sm uppercase tracking-[0.4em] text-primary">Team</p>
+        <h1 className="text-3xl font-semibold text-textPrimary sm:text-4xl">
           Meet the Catalyst Team
         </h1>
-        <p className="text-base text-slate-300">
+        <p className="text-base text-textSecondary">
           Our leadership team drives every program, event, and partnership.
         </p>
       </header>
@@ -24,16 +24,16 @@ const Team = () => {
         {teamMembers.map((member) => (
           <article
             key={member.name}
-            className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6"
+            className="rounded-2xl border border-border bg-surface p-6 shadow-sm shadow-black/20"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-cyan-500/20 text-lg font-semibold text-cyan-200">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/15 text-lg font-semibold text-primary">
               {member.name
                 .split(" ")
                 .map((part) => part[0])
                 .join("")}
             </div>
-            <h2 className="mt-4 text-lg font-semibold text-white">{member.name}</h2>
-            <p className="text-sm text-slate-400">{member.role}</p>
+            <h2 className="mt-4 text-lg font-semibold text-textPrimary">{member.name}</h2>
+            <p className="text-sm text-textSecondary">{member.role}</p>
           </article>
         ))}
       </section>

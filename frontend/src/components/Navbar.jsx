@@ -23,7 +23,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className="border-b border-border bg-background/90 backdrop-blur">
+    <header className="border-b border-border bg-background">
       <nav className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 py-4">
         <div className="flex items-center gap-3">
           {logoVisible ? (
@@ -34,7 +34,7 @@ const Navbar = () => {
               onError={() => setLogoVisible(false)}
             />
           ) : (
-            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary text-base font-semibold text-slate-950 shadow-sm">
+            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary text-base font-semibold text-background shadow-sm">
               CS
             </span>
           )}
@@ -55,7 +55,7 @@ const Navbar = () => {
               className={({ isActive }) =>
                 `rounded-full px-3 py-2 transition-colors duration-200 hover:text-textPrimary ${
                   isActive
-                    ? "bg-surface text-textPrimary"
+                    ? "border-b-2 border-primary text-primary"
                     : "text-muted hover:bg-surface/70"
                 }`
               }
@@ -85,7 +85,7 @@ const Navbar = () => {
                 className={({ isActive }) =>
                   `rounded-lg px-3 py-2 transition-colors duration-200 ${
                     isActive
-                      ? "bg-background text-textPrimary"
+                      ? "bg-background text-primary"
                       : "text-muted hover:bg-background/60 hover:text-textPrimary"
                   }`
                 }

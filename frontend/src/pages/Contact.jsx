@@ -20,18 +20,20 @@ const Contact = () => {
   return (
     <main className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
       <header className="space-y-3">
-        <p className="text-sm uppercase tracking-[0.4em] text-cyan-300">Contact</p>
-        <h1 className="text-3xl font-semibold text-white sm:text-4xl">Get in Touch</h1>
-        <p className="text-base text-slate-300">
+        <p className="text-sm uppercase tracking-[0.4em] text-primary">Contact</p>
+        <h1 className="text-3xl font-semibold text-textPrimary sm:text-4xl">
+          Get in Touch
+        </h1>
+        <p className="text-base text-textSecondary">
           Reach out to collaborate, sponsor, or learn more about Catalyst Society.
         </p>
       </header>
 
       <form
-        className="space-y-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-6"
+        className="space-y-4 rounded-2xl border border-border bg-surface p-6 shadow-sm shadow-black/20"
         onSubmit={handleSubmit}
       >
-        <label className="block text-sm text-slate-300">
+        <label className="block text-sm text-textSecondary">
           Name
           <input
             type="text"
@@ -39,11 +41,11 @@ const Contact = () => {
             value={formData.name}
             onChange={handleChange}
             placeholder="Your name"
-            className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-2 text-sm text-white focus:border-cyan-400 focus:outline-none"
+            className="mt-2 w-full rounded-xl border border-border bg-elevated px-4 py-2 text-sm text-textPrimary focus:border-primary focus:outline-none"
             required
           />
         </label>
-        <label className="block text-sm text-slate-300">
+        <label className="block text-sm text-textSecondary">
           Email
           <input
             type="email"
@@ -51,11 +53,11 @@ const Contact = () => {
             value={formData.email}
             onChange={handleChange}
             placeholder="you@example.com"
-            className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-2 text-sm text-white focus:border-cyan-400 focus:outline-none"
+            className="mt-2 w-full rounded-xl border border-border bg-elevated px-4 py-2 text-sm text-textPrimary focus:border-primary focus:outline-none"
             required
           />
         </label>
-        <label className="block text-sm text-slate-300">
+        <label className="block text-sm text-textSecondary">
           Message
           <textarea
             name="message"
@@ -63,13 +65,13 @@ const Contact = () => {
             onChange={handleChange}
             placeholder="Tell us how we can help"
             rows={5}
-            className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-2 text-sm text-white focus:border-cyan-400 focus:outline-none"
+            className="mt-2 w-full rounded-xl border border-border bg-elevated px-4 py-2 text-sm text-textPrimary focus:border-primary focus:outline-none"
             required
           />
         </label>
         <button
           type="submit"
-          className="w-full rounded-full bg-cyan-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
+          className="w-full rounded-full bg-primary px-6 py-3 text-sm font-semibold text-background transition hover:bg-primary/90"
         >
           Send Message
         </button>
