@@ -22,6 +22,7 @@ const env = {
   cookieDomain: process.env.COOKIE_DOMAIN || "",
   rateLimitWindowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
   rateLimitMax: Number(process.env.RATE_LIMIT_MAX) || 100,
+  qrSecret: process.env.QR_SECRET || "",
 };
 
 export default env;

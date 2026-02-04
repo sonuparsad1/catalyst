@@ -7,7 +7,8 @@ import indexRoutes from "./routes/index.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import usersRoutes from "./routes/users.routes.js";
 import eventsRoutes from "./routes/events.routes.js";
-import registrationsRoutes from "./routes/registrations.routes.js";
+import ticketsRoutes from "./routes/tickets.routes.js";
+import scanRoutes from "./routes/scan.routes.js";
 import errorMiddleware from "./middleware/error.middleware.js";
 import dbGuard from "./middleware/dbGuard.middleware.js";
 
@@ -57,7 +58,8 @@ app.use("/api/v1", apiLimiter);
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", dbGuard, usersRoutes);
 app.use("/api/v1/events", dbGuard, eventsRoutes);
-app.use("/api/v1/registrations", dbGuard, registrationsRoutes);
+app.use("/api/v1/tickets", dbGuard, ticketsRoutes);
+app.use("/api/v1/scan", dbGuard, scanRoutes);
 
 app.use(errorMiddleware);
 
