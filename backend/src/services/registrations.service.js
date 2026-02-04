@@ -1,4 +1,4 @@
-import Event from "../models/Event.js";
+import Event from "../models/Event.model.js";
 import Registration from "../models/Registration.js";
 import { ServiceState, getServiceState } from "../config/serviceState.js";
 import AppError from "../utils/appError.js";
@@ -13,11 +13,11 @@ const registerForEvent = async (userId, eventId) => {
   ensureDatabaseEnabled();
 
   const event = await Event.findById(eventId);
-  if (!event || !event.isPublished) {
+  if (!event || event.status !== "PUBLISHED") {
     throw new AppError("Event not found", 404, "EVENT_NOT_FOUND");
   }
 
-  if (event.ticketPrice > 0) {
+  if (event.price > 0) {
     throw new AppError("Payment required", 402, "PAYMENT_REQUIRED");
   }
 
@@ -42,7 +42,7 @@ const listRegistrationsForUser = async (userId) => {
   ensureDatabaseEnabled();
 
   const registrations = await Registration.find({ user: userId })
-    .populate("event", "title startsAt endsAt location ticketPrice currency")
+    .populate("event", "title date time venue price")
     .sort({ createdAt: -1 });
 
   return registrations.map((registration) => ({
@@ -54,11 +54,10 @@ const listRegistrationsForUser = async (userId) => {
       ? {
           id: registration.event.id,
           title: registration.event.title,
-          startsAt: registration.event.startsAt,
-          endsAt: registration.event.endsAt,
-          location: registration.event.location,
-          ticketPrice: registration.event.ticketPrice,
-          currency: registration.event.currency,
+          date: registration.event.date,
+          time: registration.event.time,
+          venue: registration.event.venue,
+          price: registration.event.price,
         }
       : null,
   }));

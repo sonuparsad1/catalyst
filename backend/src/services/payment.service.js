@@ -1,7 +1,7 @@
 import Stripe from "stripe";
 import env from "../config/env.js";
 import AppError from "../utils/appError.js";
-import Event from "../models/Event.js";
+import Event from "../models/Event.model.js";
 import Payment from "../models/Payment.model.js";
 import Registration from "../models/Registration.js";
 import Invoice from "../models/Invoice.model.js";
@@ -45,11 +45,11 @@ const createPaymentOrder = async ({ userId, eventId, idempotencyKey }) => {
   ensureStripeEnabled();
 
   const event = await Event.findById(eventId);
-  if (!event || !event.isPublished) {
+  if (!event || event.status !== "PUBLISHED") {
     throw new AppError("Event not found", 404, "EVENT_NOT_FOUND");
   }
 
-  if (event.ticketPrice <= 0) {
+  if (event.price <= 0) {
     throw new AppError("Event is free", 400, "EVENT_FREE");
   }
 
@@ -89,8 +89,8 @@ const createPaymentOrder = async ({ userId, eventId, idempotencyKey }) => {
     await registration.save();
   }
 
-  const amount = Math.round(event.ticketPrice * 100);
-  const currency = event.currency || env.paymentCurrency;
+  const amount = Math.round(event.price * 100);
+  const currency = env.paymentCurrency;
 
   const intent = await stripe.paymentIntents.create(
     {
@@ -146,7 +146,7 @@ const listPaymentsForUser = async (userId) => {
   ensureDatabaseEnabled();
 
   const payments = await Payment.find({ user: userId })
-    .populate("event", "title startsAt location")
+    .populate("event", "title date time venue")
     .sort({ createdAt: -1 });
 
   return payments.map((payment) => ({
@@ -159,8 +159,9 @@ const listPaymentsForUser = async (userId) => {
       ? {
           id: payment.event.id,
           title: payment.event.title,
-          startsAt: payment.event.startsAt,
-          location: payment.event.location,
+          date: payment.event.date,
+          time: payment.event.time,
+          venue: payment.event.venue,
         }
       : null,
   }));
