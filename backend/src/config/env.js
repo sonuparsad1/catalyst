@@ -17,6 +17,9 @@ const env = {
   enableRefreshTokens: process.env.ENABLE_REFRESH_TOKENS === "true",
   jwtRefreshSecret: process.env.JWT_REFRESH_SECRET || "",
   jwtRefreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || "7d",
+  cookieName: process.env.COOKIE_NAME || "accessToken",
+  cookieSecure: process.env.COOKIE_SECURE === "true",
+  cookieDomain: process.env.COOKIE_DOMAIN || "",
   rateLimitWindowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
   rateLimitMax: Number(process.env.RATE_LIMIT_MAX) || 100,
 };

@@ -4,7 +4,7 @@ import env from "../config/env.js";
 
 const ensureDatabaseEnabled = () => {
   if (!env.useDb) {
-    throw new AppError("Service unavailable", 503, "DB_DISABLED");
+    throw new AppError("Database not enabled", 503, "DB_DISABLED");
   }
 };
 

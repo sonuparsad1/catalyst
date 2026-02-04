@@ -8,6 +8,7 @@ import {
   register,
 } from "../controllers/auth.controller.js";
 import authMiddleware from "../middleware/auth.middleware.js";
+import dbGuard from "../middleware/dbGuard.middleware.js";
 
 const router = Router();
 
@@ -16,10 +17,11 @@ const authLimiter = rateLimit({
   max: 10,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { message: "Too many requests" },
+  message: { message: "Too many requests", code: "RATE_LIMITED" },
 });
 
 router.use(authLimiter);
+router.use(dbGuard);
 
 router.post("/register", register);
 router.post("/login", login);
