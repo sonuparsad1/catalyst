@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Catalyst Society logo">
+  <defs>
+    <linearGradient id="gold" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#C9A227" />
+      <stop offset="100%" stop-color="#B8941F" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="32" fill="url(#gold)" />
+  <text x="50%" y="52%" text-anchor="middle" dominant-baseline="middle" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="700" fill="#111827">
+    CS
+  </text>
+</svg>
