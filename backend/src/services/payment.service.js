@@ -6,7 +6,7 @@ import Payment from "../models/Payment.model.js";
 import Registration from "../models/Registration.js";
 import Invoice from "../models/Invoice.model.js";
 import Refund from "../models/Refund.model.js";
-import User from "../models/User.js";
+import User from "../models/User.model.js";
 import { generateInvoiceNumber, generateInvoicePdf } from "./invoice.service.js";
 import { sendMail } from "./mail.service.js";
 
