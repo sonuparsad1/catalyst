@@ -19,6 +19,8 @@ const listEvents = async () => {
     startsAt: event.startsAt,
     endsAt: event.endsAt,
     capacity: event.capacity,
+    ticketPrice: event.ticketPrice,
+    currency: event.currency,
   }));
 };
 
@@ -37,12 +39,23 @@ const getEventById = async (eventId) => {
     startsAt: event.startsAt,
     endsAt: event.endsAt,
     capacity: event.capacity,
+    ticketPrice: event.ticketPrice,
+    currency: event.currency,
   };
 };
 
 const createEvent = async (payload, userId) => {
   ensureDatabaseEnabled();
-  const { title, description, location, startsAt, endsAt, capacity } = payload;
+  const {
+    title,
+    description,
+    location,
+    startsAt,
+    endsAt,
+    capacity,
+    ticketPrice,
+    currency,
+  } = payload;
 
   if (!title || !description || !location || !startsAt || !endsAt) {
     throw new AppError("Invalid event data", 400, "VALIDATION_ERROR");
@@ -55,6 +68,8 @@ const createEvent = async (payload, userId) => {
     startsAt: new Date(startsAt),
     endsAt: new Date(endsAt),
     capacity: Number(capacity) || 0,
+    ticketPrice: Number(ticketPrice) || 0,
+    currency: currency ? currency.toUpperCase() : "INR",
     createdBy: userId,
     isPublished: true,
   });
@@ -67,6 +82,8 @@ const createEvent = async (payload, userId) => {
     startsAt: event.startsAt,
     endsAt: event.endsAt,
     capacity: event.capacity,
+    ticketPrice: event.ticketPrice,
+    currency: event.currency,
   };
 };
 
