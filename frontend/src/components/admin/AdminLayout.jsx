@@ -5,6 +5,7 @@ const navItems = [
   { label: "Events", to: "/admin/events" },
   { label: "Tickets", to: "/admin/tickets" },
   { label: "Attendance", to: "/admin/attendance" },
+  { label: "Scanner", to: "/admin/scan" },
   { label: "Payments", to: "/admin/payments" },
   { label: "Refunds", to: "/admin/refunds" },
   { label: "Users", to: "/admin/users" },
