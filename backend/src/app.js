@@ -6,6 +6,11 @@ import indexRoutes from "./routes/index.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import usersRoutes from "./routes/users.routes.js";
 import eventsRoutes from "./routes/events.routes.js";
+import registrationsRoutes from "./routes/registrations.routes.js";
+import paymentsRoutes from "./routes/payments.routes.js";
+import webhooksRoutes from "./routes/webhooks.routes.js";
+import refundsRoutes from "./routes/refunds.routes.js";
+import analyticsRoutes from "./routes/analytics.routes.js";
 import ticketsRoutes from "./routes/tickets.routes.js";
 import scanRoutes from "./routes/scan.routes.js";
 import errorMiddleware from "./middleware/error.middleware.js";
@@ -17,7 +22,14 @@ app.set("trust proxy", 1);
 app.use(corsMiddleware);
 
 app.use(helmet());
-app.use(express.json({ limit: "10kb" }));
+app.use(
+  express.json({
+    limit: "10kb",
+    verify: (req, _res, buf) => {
+      req.rawBody = buf;
+    },
+  })
+);
 
 app.use("/", indexRoutes);
 
@@ -34,6 +46,11 @@ app.use("/api/v1", apiLimiter);
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", dbGuard, usersRoutes);
 app.use("/api/v1/events", dbGuard, eventsRoutes);
+app.use("/api/v1/registrations", dbGuard, registrationsRoutes);
+app.use("/api/v1/payments", dbGuard, paymentsRoutes);
+app.use("/api/v1/webhooks", dbGuard, webhooksRoutes);
+app.use("/api/v1/refunds", dbGuard, refundsRoutes);
+app.use("/api/v1/analytics", dbGuard, analyticsRoutes);
 app.use("/api/v1/tickets", dbGuard, ticketsRoutes);
 app.use("/api/v1/scan", dbGuard, scanRoutes);
 

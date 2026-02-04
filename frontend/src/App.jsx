@@ -14,6 +14,12 @@ import Contact from "./pages/Contact.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
+import Checkout from "./pages/Checkout.jsx";
+import Payments from "./pages/Payments.jsx";
+import Invoices from "./pages/Invoices.jsx";
+import Refunds from "./pages/Refunds.jsx";
+import AdminAnalytics from "./pages/AdminAnalytics.jsx";
+import AdminPayments from "./pages/AdminPayments.jsx";
 import MyTickets from "./pages/MyTickets.jsx";
 import AdminEvents from "./pages/AdminEvents.jsx";
 import AdminScan from "./pages/AdminScan.jsx";
@@ -48,6 +54,10 @@ const App = () => {
               }
             />
             <Route
+              path="/checkout"
+              element={
+                <ProtectedRoute>
+                  <Checkout />
               path="/tickets"
               element={
                 <ProtectedRoute>
@@ -56,6 +66,43 @@ const App = () => {
               }
             />
             <Route
+              path="/payments"
+              element={
+                <ProtectedRoute>
+                  <Payments />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/invoices"
+              element={
+                <ProtectedRoute>
+                  <Invoices />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/refunds"
+              element={
+                <ProtectedRoute>
+                  <Refunds />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/analytics"
+              element={
+                <ProtectedRoute>
+                  <AdminAnalytics />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/payments"
+              element={
+                <ProtectedRoute>
+                  <AdminPayments />
+                </ProtectedRoute>
               path="/admin/events"
               element={
                 <AdminRoute>

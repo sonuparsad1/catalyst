@@ -23,6 +23,16 @@ const env = {
   passwordPepper: process.env.PASSWORD_PEPPER || "",
   rateLimitWindowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
   rateLimitMax: Number(process.env.RATE_LIMIT_MAX) || 100,
+  stripeSecretKey: process.env.STRIPE_SECRET_KEY || "",
+  stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET || "",
+  paymentCurrency: (process.env.PAYMENT_CURRENCY || "INR").toUpperCase(),
+  mailEnabled: process.env.MAIL_ENABLED === "true",
+  mailHost: process.env.MAIL_HOST || "",
+  mailPort: Number(process.env.MAIL_PORT) || 587,
+  mailUser: process.env.MAIL_USER || "",
+  mailPass: process.env.MAIL_PASS || "",
+  mailFrom: process.env.MAIL_FROM || "no-reply@catalystsociety.com",
+  dashboardBaseUrl: process.env.DASHBOARD_BASE_URL || "",
   qrSecret: process.env.QR_SECRET || "",
 };
 

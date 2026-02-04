@@ -8,6 +8,8 @@ const eventSchema = new mongoose.Schema(
     startsAt: { type: Date, required: true },
     endsAt: { type: Date, required: true },
     capacity: { type: Number, default: 0 },
+    ticketPrice: { type: Number, default: 0 },
+    currency: { type: String, default: "INR", uppercase: true },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     isPublished: { type: Boolean, default: true },
   },
