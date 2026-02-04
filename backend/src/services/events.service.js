@@ -1,3 +1,4 @@
+import { ServiceState, getServiceState } from "../config/serviceState.js";
 import Event from "../models/Event.model.js";
 import AppError from "../utils/appError.js";
 
@@ -25,18 +26,6 @@ const toEventResponse = (event) => ({
 
 const listEvents = async ({ includeAll = false } = {}) => {
   ensureDatabaseEnabled();
-  const events = await Event.find({ isPublished: true }).sort({ startsAt: 1 });
-  return events.map((event) => ({
-    id: event.id,
-    title: event.title,
-    description: event.description,
-    location: event.location,
-    startsAt: event.startsAt,
-    endsAt: event.endsAt,
-    capacity: event.capacity,
-    ticketPrice: event.ticketPrice,
-    currency: event.currency,
-  }));
   const filter = includeAll ? {} : { status: "PUBLISHED" };
   const events = await Event.find(filter).sort({ date: 1, time: 1 });
   return events.map(toEventResponse);
@@ -49,17 +38,6 @@ const getEventById = async (eventId, { includeUnpublished = false } = {}) => {
     throw new AppError("Event not found", 404, "EVENT_NOT_FOUND");
   }
 
-  return {
-    id: event.id,
-    title: event.title,
-    description: event.description,
-    location: event.location,
-    startsAt: event.startsAt,
-    endsAt: event.endsAt,
-    capacity: event.capacity,
-    ticketPrice: event.ticketPrice,
-    currency: event.currency,
-  };
   return toEventResponse(event);
 };
 
@@ -68,12 +46,6 @@ const createEvent = async (payload, userId) => {
   const {
     title,
     description,
-    location,
-    startsAt,
-    endsAt,
-    capacity,
-    ticketPrice,
-    currency,
     category,
     date,
     time,
@@ -90,12 +62,6 @@ const createEvent = async (payload, userId) => {
   const event = await Event.create({
     title: title.trim(),
     description: description.trim(),
-    location: location.trim(),
-    startsAt: new Date(startsAt),
-    endsAt: new Date(endsAt),
-    capacity: Number(capacity) || 0,
-    ticketPrice: Number(ticketPrice) || 0,
-    currency: currency ? currency.toUpperCase() : "INR",
     category,
     date,
     time,
@@ -107,17 +73,6 @@ const createEvent = async (payload, userId) => {
     status: status || "DRAFT",
   });
 
-  return {
-    id: event.id,
-    title: event.title,
-    description: event.description,
-    location: event.location,
-    startsAt: event.startsAt,
-    endsAt: event.endsAt,
-    capacity: event.capacity,
-    ticketPrice: event.ticketPrice,
-    currency: event.currency,
-  };
   return toEventResponse(event);
 };
 
