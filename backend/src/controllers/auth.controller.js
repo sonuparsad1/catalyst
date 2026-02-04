@@ -95,8 +95,16 @@ const login = async (req, res, next) => {
         .json({ message: "Invalid credentials", code: "INVALID_CREDENTIALS" });
     }
 
-    const token = signAccessToken({ id: user.id, role: user.role });
-    const refreshToken = signRefreshToken({ id: user.id, role: user.role });
+    const token = signAccessToken({
+      sub: user.id,
+      role: user.role,
+      ver: user.tokenVersion,
+    });
+    const refreshToken = signRefreshToken({
+      sub: user.id,
+      role: user.role,
+      ver: user.tokenVersion,
+    });
 
     setAuthCookie(res, token);
 
@@ -106,29 +114,24 @@ const login = async (req, res, next) => {
   }
 };
 
-const me = async (req, res, next) => {
+const me = async (req, res) =>
+  res.json({
+    id: req.user.id,
+    name: req.user.name,
+    email: req.user.email,
+    role: req.user.role,
+  });
+
+const logout = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user.id).select("_id name email role");
-    if (!user) {
-      return res
-        .status(401)
-        .json({ message: "Unauthorized", code: "UNAUTHORIZED" });
-    }
-
-    return res.json({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
+    await User.findByIdAndUpdate(req.user.id, {
+      $inc: { tokenVersion: 1 },
     });
+    clearAuthCookie(res);
+    res.json({ message: "Logged out" });
   } catch (error) {
-    return next(error);
+    next(error);
   }
-};
-
-const logout = (_req, res) => {
-  clearAuthCookie(res);
-  res.json({ message: "Logged out" });
 };
 
 const refresh = async (req, res, next) => {
@@ -147,7 +150,18 @@ const refresh = async (req, res, next) => {
     }
 
     const payload = verifyRefreshToken(refreshToken);
-    const token = signAccessToken({ id: payload.id, role: payload.role });
+    const user = await User.findById(payload.sub).select("_id role tokenVersion");
+    if (!user || user.tokenVersion !== payload.ver) {
+      return res
+        .status(401)
+        .json({ message: "Invalid refresh token", code: "INVALID_REFRESH" });
+    }
+
+    const token = signAccessToken({
+      sub: user.id,
+      role: user.role,
+      ver: user.tokenVersion,
+    });
     setAuthCookie(res, token);
 
     return res.json({ token });

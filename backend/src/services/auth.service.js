@@ -1,7 +1,8 @@
-import bcrypt from "bcrypt";
 import env from "../config/env.js";
-import User from "../models/User.js";
+import { ServiceState, getServiceState } from "../config/serviceState.js";
+import User from "../models/User.model.js";
 import AppError from "../utils/appError.js";
+import { comparePassword, hashPassword } from "../utils/password.js";
 import {
   signAccessToken,
   signRefreshToken,
@@ -9,8 +10,8 @@ import {
 } from "./token.service.js";
 
 const ensureDatabaseEnabled = () => {
-  if (!env.useDb) {
-    throw new AppError("Database not enabled", 503, "DB_DISABLED");
+  if (getServiceState() !== ServiceState.READY) {
+    throw new AppError("Service temporarily unavailable", 503, "DB_DISABLED");
   }
 };
 
@@ -29,7 +30,7 @@ const registerUser = async ({ name, email, password }) => {
     throw new AppError("Unable to register", 400, "EMAIL_IN_USE");
   }
 
-  const passwordHash = await bcrypt.hash(password, 12);
+  const passwordHash = await hashPassword(password);
   await User.create({
     name: name.trim(),
     email: normalizedEmail,
@@ -51,13 +52,21 @@ const loginUser = async ({ email, password }) => {
     throw new AppError("Invalid credentials", 401, "INVALID_CREDENTIALS");
   }
 
-  const isMatch = await bcrypt.compare(password, user.passwordHash);
+  const isMatch = await comparePassword(password, user.passwordHash);
   if (!isMatch) {
     throw new AppError("Invalid credentials", 401, "INVALID_CREDENTIALS");
   }
 
-  const token = signAccessToken({ id: user.id, role: user.role });
-  const refreshToken = signRefreshToken({ id: user.id, role: user.role });
+  const token = signAccessToken({
+    sub: user.id,
+    role: user.role,
+    ver: user.tokenVersion,
+  });
+  const refreshToken = signRefreshToken({
+    sub: user.id,
+    role: user.role,
+    ver: user.tokenVersion,
+  });
 
   return refreshToken ? { token, refreshToken } : { token };
 };
@@ -90,7 +99,15 @@ const refreshAccessToken = async (refreshToken) => {
   }
 
   const payload = verifyRefreshToken(refreshToken);
-  const token = signAccessToken({ id: payload.id, role: payload.role });
+  const user = await User.findById(payload.sub).select("_id role tokenVersion");
+  if (!user || user.tokenVersion !== payload.ver) {
+    throw new AppError("Invalid refresh token", 401, "INVALID_REFRESH");
+  }
+  const token = signAccessToken({
+    sub: user.id,
+    role: user.role,
+    ver: user.tokenVersion,
+  });
 
   return { token };
 };
