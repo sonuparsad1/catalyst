@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useContext, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.svg";
+import AuthContext from "../context/AuthContext.jsx";
 
 const navLinks = [
   { label: "Home", to: "/" },
@@ -17,9 +18,16 @@ const navLinks = [
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [logoVisible, setLogoVisible] = useState(true);
+  const { isAuthenticated, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleLinkClick = () => {
     setMenuOpen(false);
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
   };
 
   return (
@@ -64,6 +72,56 @@ const Navbar = () => {
             </NavLink>
           ))}
         </div>
+        <div className="hidden items-center gap-4 text-sm md:flex">
+          {isAuthenticated ? (
+            <>
+              <NavLink
+                to="/dashboard"
+                className={({ isActive }) =>
+                  `px-1 py-2 transition-colors duration-200 ${
+                    isActive
+                      ? "text-primary drop-shadow-[0_0_12px_rgba(198,168,107,0.35)]"
+                      : "text-muted hover:text-textPrimary"
+                  }`
+                }
+              >
+                Dashboard
+              </NavLink>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="rounded-full border border-primary px-4 py-2 text-xs font-semibold text-primary transition hover:bg-primary/10"
+              >
+                Sign out
+              </button>
+            </>
+          ) : (
+            <>
+              <NavLink
+                to="/login"
+                className={({ isActive }) =>
+                  `px-1 py-2 transition-colors duration-200 ${
+                    isActive ? "text-primary" : "text-muted hover:text-textPrimary"
+                  }`
+                }
+              >
+                Login
+              </NavLink>
+              <NavLink
+                to="/register"
+                className={({ isActive }) =>
+                  `rounded-full border border-primary px-4 py-2 text-xs font-semibold transition ${
+                    isActive
+                      ? "bg-primary text-background"
+                      : "text-primary hover:bg-primary/10"
+                  }`
+                }
+              >
+                Join
+              </NavLink>
+            </>
+          )}
+        </div>
         <button
           type="button"
           className="inline-flex items-center justify-center rounded-full border border-border bg-surface/80 px-3 py-2 text-lg text-textPrimary transition hover:border-primary hover:text-primary md:hidden"
@@ -93,6 +151,62 @@ const Navbar = () => {
                 {link.label}
               </NavLink>
             ))}
+            {isAuthenticated ? (
+              <>
+                <NavLink
+                  to="/dashboard"
+                  onClick={handleLinkClick}
+                  className={({ isActive }) =>
+                    `rounded-lg px-3 py-2 transition-colors duration-200 ${
+                      isActive
+                        ? "text-primary drop-shadow-[0_0_12px_rgba(198,168,107,0.35)]"
+                        : "text-muted hover:text-textPrimary"
+                    }`
+                  }
+                >
+                  Dashboard
+                </NavLink>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    await handleLogout();
+                    handleLinkClick();
+                  }}
+                  className="rounded-lg border border-primary px-3 py-2 text-left text-xs font-semibold text-primary transition hover:bg-primary/10"
+                >
+                  Sign out
+                </button>
+              </>
+            ) : (
+              <>
+                <NavLink
+                  to="/login"
+                  onClick={handleLinkClick}
+                  className={({ isActive }) =>
+                    `rounded-lg px-3 py-2 transition-colors duration-200 ${
+                      isActive
+                        ? "text-primary drop-shadow-[0_0_12px_rgba(198,168,107,0.35)]"
+                        : "text-muted hover:text-textPrimary"
+                    }`
+                  }
+                >
+                  Login
+                </NavLink>
+                <NavLink
+                  to="/register"
+                  onClick={handleLinkClick}
+                  className={({ isActive }) =>
+                    `rounded-lg border border-primary px-3 py-2 text-xs font-semibold transition ${
+                      isActive
+                        ? "bg-primary text-background"
+                        : "text-primary hover:bg-primary/10"
+                    }`
+                  }
+                >
+                  Join
+                </NavLink>
+              </>
+            )}
           </div>
         </div>
       )}
