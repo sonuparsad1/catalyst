@@ -1,8 +1,7 @@
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 import AuthContext from "../auth/AuthContext.jsx";
 import Seo from "../components/Seo.jsx";
-import { Link } from "react-router-dom";
-import AuthContext from "../context/AuthContext.jsx";
 
 const quickLinks = [
   {
@@ -25,16 +24,6 @@ const quickLinks = [
     description: "Track refund requests with verified approvals.",
     to: "/refunds",
   },
-  {
-    title: "Admin Analytics",
-    description: "Monitor revenue, ticket activations, and risk signals.",
-    to: "/admin/analytics",
-  },
-  {
-    title: "Admin Payments",
-    description: "Oversee all orders with secure audit trails.",
-    to: "/admin/payments",
-  },
 ];
 
 const Dashboard = () => {
@@ -44,33 +33,30 @@ const Dashboard = () => {
     <>
       <Seo title="Dashboard" description="Member dashboard for Catalyst Society." noIndex />
       <section className="px-6 py-16">
-        <div className="mx-auto w-full max-w-4xl">
+        <div className="mx-auto w-full max-w-4xl space-y-8">
           <div className="rounded-2xl border border-border bg-card-gradient p-8 shadow-card-ambient">
-          <p className="text-xs uppercase tracking-[0.3em] text-muted">
-            Member Dashboard
-          </p>
-    <section className="px-6 py-16">
-      <div className="mx-auto w-full max-w-5xl">
-      <div className="mx-auto w-full max-w-4xl space-y-8">
-        <div className="rounded-2xl border border-border bg-card-gradient p-8 shadow-card-ambient">
-          <p className="text-xs uppercase tracking-[0.3em] text-muted">Member Dashboard</p>
-          <h1 className="mt-3 text-3xl font-semibold text-textPrimary">
-            Welcome, {user?.name}
-          </h1>
-          <p className="mt-2 text-sm text-textSecondary">
-            Your secure member profile is active with verified access controls.
-          </p>
-          <div className="mt-6 grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl border border-border bg-surface/60 p-5">
-              <p className="text-xs uppercase tracking-[0.2em] text-muted">Email</p>
-              <p className="mt-2 text-sm text-textPrimary">{user?.email}</p>
-            </div>
-            <div className="rounded-xl border border-border bg-surface/60 p-5">
-              <p className="text-xs uppercase tracking-[0.2em] text-muted">Role</p>
-              <p className="mt-2 text-sm text-textPrimary">{user?.role}</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-muted">
+              Member Dashboard
+            </p>
+            <h1 className="mt-3 text-3xl font-semibold text-textPrimary">
+              Welcome, {user?.name}
+            </h1>
+            <p className="mt-2 text-sm text-textSecondary">
+              Your secure member profile is active with verified access controls.
+            </p>
+            <div className="mt-6 grid gap-4 md:grid-cols-2">
+              <div className="rounded-xl border border-border bg-surface/60 p-5">
+                <p className="text-xs uppercase tracking-[0.2em] text-muted">Email</p>
+                <p className="mt-2 text-sm text-textPrimary">{user?.email}</p>
+              </div>
+              <div className="rounded-xl border border-border bg-surface/60 p-5">
+                <p className="text-xs uppercase tracking-[0.2em] text-muted">Role</p>
+                <p className="mt-2 text-sm text-textPrimary">{user?.role}</p>
+              </div>
             </div>
           </div>
-          <div className="mt-8">
+
+          <div className="rounded-2xl border border-border bg-card-gradient p-8 shadow-card-ambient">
             <p className="text-xs uppercase tracking-[0.2em] text-muted">
               Payment Operations
             </p>
@@ -81,23 +67,23 @@ const Dashboard = () => {
                   to={link.to}
                   className="rounded-xl border border-border bg-surface/70 p-5 transition hover:border-primary hover:shadow-accent-glow"
                 >
-                  <p className="text-sm font-semibold text-textPrimary">
-                    {link.title}
-                  </p>
+                  <p className="text-sm font-semibold text-textPrimary">{link.title}</p>
                   <p className="mt-2 text-xs text-textSecondary">
                     {link.description}
                   </p>
                 </Link>
               ))}
             </div>
-          <div className="mt-6 flex flex-wrap gap-3">
+          </div>
+
+          <div className="flex flex-wrap gap-3">
             <Link
               to="/tickets"
               className="rounded-full border border-primary px-5 py-3 text-sm font-semibold text-primary transition hover:bg-primary/10"
             >
               My Tickets
             </Link>
-            {user?.role === "admin" ? (
+            {user?.role === "admin" && (
               <>
                 <Link
                   to="/admin/events"
@@ -106,23 +92,28 @@ const Dashboard = () => {
                   Manage Events
                 </Link>
                 <Link
-                  to="/admin/scan"
+                  to="/admin/attendance"
                   className="rounded-full border border-border px-5 py-3 text-sm font-semibold text-textSecondary transition hover:text-textPrimary"
                 >
-                  Scan Tickets
+                  Attendance
+                </Link>
+                <Link
+                  to="/admin/payments"
+                  className="rounded-full border border-border px-5 py-3 text-sm font-semibold text-textSecondary transition hover:text-textPrimary"
+                >
+                  Admin Payments
                 </Link>
               </>
-            ) : null}
+            )}
+            <button
+              type="button"
+              onClick={logout}
+              className="rounded-full border border-primary px-5 py-3 text-sm font-semibold text-primary transition hover:bg-primary/10"
+            >
+              Sign out
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={logout}
-            className="mt-8 rounded-full border border-primary px-5 py-3 text-sm font-semibold text-primary transition hover:bg-primary/10"
-          >
-            Sign out
-          </button>
         </div>
-      </div>
       </section>
     </>
   );

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import AuthContext from "../context/AuthContext.jsx";
+import AuthContext from "../auth/AuthContext.jsx";
 import { getEvent } from "../api/events.js";
 import { registerTicket } from "../api/tickets.js";
 

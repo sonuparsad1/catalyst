@@ -102,9 +102,6 @@ const Navbar = () => {
               {user?.role === "admin" && (
                 <NavLink
                   to="/admin/dashboard"
-              {user?.role === "admin" ? (
-                <NavLink
-                  to="/admin/events"
                   className={({ isActive }) =>
                     `px-1 py-2 transition-colors duration-200 ${
                       isActive
@@ -116,7 +113,6 @@ const Navbar = () => {
                   Admin
                 </NavLink>
               )}
-              ) : null}
               <button
                 type="button"
                 onClick={handleLogout}
@@ -212,9 +208,6 @@ const Navbar = () => {
                 {user?.role === "admin" && (
                   <NavLink
                     to="/admin/dashboard"
-                {user?.role === "admin" ? (
-                  <NavLink
-                    to="/admin/events"
                     onClick={handleLinkClick}
                     className={({ isActive }) =>
                       `rounded-lg px-3 py-2 transition-colors duration-200 ${
@@ -227,7 +220,6 @@ const Navbar = () => {
                     Admin
                   </NavLink>
                 )}
-                ) : null}
                 <button
                   type="button"
                   onClick={async () => {
