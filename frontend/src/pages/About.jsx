@@ -12,21 +12,21 @@ const About = () => {
         </p>
       </header>
       <section className="grid gap-6 md:grid-cols-3">
-        <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm shadow-black/20">
+        <div className="rounded-2xl border border-border bg-card-gradient p-6 shadow-card-ambient">
           <h2 className="text-lg font-semibold text-textPrimary">Vision</h2>
           <p className="mt-3 text-sm text-textSecondary">
             A campus culture where every student is equipped to create, collaborate, and lead
             meaningful impact.
           </p>
         </div>
-        <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm shadow-black/20">
+        <div className="rounded-2xl border border-border bg-card-gradient p-6 shadow-card-ambient">
           <h2 className="text-lg font-semibold text-textPrimary">Mission</h2>
           <p className="mt-3 text-sm text-textSecondary">
             Deliver experiential programs, mentorship, and events that spark innovation and
             elevate student leadership.
           </p>
         </div>
-        <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm shadow-black/20">
+        <div className="rounded-2xl border border-border bg-card-gradient p-6 shadow-card-ambient">
           <h2 className="text-lg font-semibold text-textPrimary">About</h2>
           <p className="mt-3 text-sm text-textSecondary">
             From hackathons to community initiatives, we curate high-impact experiences that
@@ -34,7 +34,7 @@ const About = () => {
           </p>
         </div>
       </section>
-      <section className="rounded-3xl border border-border bg-elevated p-8 shadow-sm shadow-black/20">
+      <section className="rounded-3xl border border-border bg-card-gradient p-8 shadow-card-ambient">
         <h3 className="text-xl font-semibold text-textPrimary">What we value</h3>
         <ul className="mt-4 grid gap-4 text-sm text-textSecondary sm:grid-cols-2">
           <li className="rounded-xl border border-border bg-surface p-4">

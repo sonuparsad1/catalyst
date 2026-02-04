@@ -30,7 +30,7 @@ const Contact = () => {
       </header>
 
       <form
-        className="space-y-4 rounded-2xl border border-border bg-surface p-6 shadow-sm shadow-black/20"
+        className="space-y-4 rounded-2xl border border-border bg-card-gradient p-6 shadow-card-ambient"
         onSubmit={handleSubmit}
       >
         <label className="block text-sm text-textSecondary">
@@ -71,7 +71,7 @@ const Contact = () => {
         </label>
         <button
           type="submit"
-          className="w-full rounded-full bg-primary px-6 py-3 text-sm font-semibold text-background transition hover:bg-primary/90"
+          className="w-full rounded-full bg-gold-gradient px-6 py-3 text-sm font-semibold text-background shadow-accent-glow transition hover:brightness-105"
         >
           Send Message
         </button>

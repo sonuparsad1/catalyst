@@ -27,7 +27,7 @@ const upcomingEvents = [
 const Home = () => {
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-col gap-16 px-6 py-12">
-      <section className="grid gap-10 rounded-3xl border border-border bg-surface p-10 shadow-sm shadow-black/30 lg:grid-cols-[1.1fr_0.9fr]">
+      <section className="grid gap-10 rounded-3xl border border-border bg-card-gradient p-10 shadow-card-ambient lg:grid-cols-[1.1fr_0.9fr]">
         <div className="space-y-6">
           <p className="text-sm uppercase tracking-[0.4em] text-primary">
             Ignite • Innovate • Lead
@@ -40,18 +40,18 @@ const Home = () => {
             community impact through events, education, and hands-on experiences.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-background transition hover:bg-primary/90">
+            <button className="rounded-full bg-gold-gradient px-6 py-3 text-sm font-semibold text-background shadow-accent-glow transition hover:brightness-105">
               View Events
             </button>
-            <button className="rounded-full border border-border px-6 py-3 text-sm font-semibold text-textPrimary transition hover:bg-elevated">
+            <button className="rounded-full border border-primary/60 bg-surface px-6 py-3 text-sm font-semibold text-textPrimary transition hover:border-primary">
               Join Catalyst Society
             </button>
-            <button className="rounded-full border border-primary/50 px-6 py-3 text-sm font-semibold text-primary transition hover:bg-elevated">
+            <button className="rounded-full border border-primary/50 bg-surface px-6 py-3 text-sm font-semibold text-primary transition hover:border-primary">
               Become a Sponsor
             </button>
           </div>
         </div>
-        <div className="space-y-6 rounded-2xl border border-border bg-elevated p-6">
+        <div className="space-y-6 rounded-2xl border border-border bg-card-gradient p-6 shadow-card-ambient">
           <h2 className="text-lg font-semibold text-textPrimary">Why Catalyst</h2>
           <ul className="space-y-4 text-sm text-textSecondary">
             <li className="flex gap-3">

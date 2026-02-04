@@ -30,11 +30,11 @@ const Navbar = () => {
             <img
               src={logo}
               alt="Catalyst Society logo"
-              className="h-11 w-11 rounded-full border border-border object-cover shadow-sm"
+              className="h-11 w-11 rounded-full border border-border object-cover shadow-card-ambient"
               onError={() => setLogoVisible(false)}
             />
           ) : (
-            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary text-base font-semibold text-background shadow-sm">
+            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-gold-gradient text-base font-semibold text-background shadow-accent-glow">
               CS
             </span>
           )}
@@ -47,16 +47,16 @@ const Navbar = () => {
             </p>
           </div>
         </div>
-        <div className="hidden items-center gap-2 text-sm font-medium text-muted md:flex">
+        <div className="hidden items-center gap-6 text-sm font-medium text-muted md:flex">
           {navLinks.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
               className={({ isActive }) =>
-                `rounded-full px-3 py-2 transition-colors duration-200 hover:text-textPrimary ${
+                `px-1 py-2 transition-colors duration-200 hover:text-textPrimary ${
                   isActive
-                    ? "border-b-2 border-primary text-primary"
-                    : "text-muted hover:bg-surface/70"
+                    ? "text-primary drop-shadow-[0_0_12px_rgba(198,168,107,0.35)]"
+                    : "text-muted"
                 }`
               }
             >
@@ -85,8 +85,8 @@ const Navbar = () => {
                 className={({ isActive }) =>
                   `rounded-lg px-3 py-2 transition-colors duration-200 ${
                     isActive
-                      ? "bg-background text-primary"
-                      : "text-muted hover:bg-background/60 hover:text-textPrimary"
+                      ? "text-primary drop-shadow-[0_0_12px_rgba(198,168,107,0.35)]"
+                      : "text-muted hover:text-textPrimary"
                   }`
                 }
               >

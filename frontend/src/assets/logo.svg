@@ -6,7 +6,7 @@
     </linearGradient>
   </defs>
   <rect width="64" height="64" rx="32" fill="url(#gold)" />
-  <text x="50%" y="52%" text-anchor="middle" dominant-baseline="middle" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="700" fill="#111827">
+  <text x="50%" y="52%" text-anchor="middle" dominant-baseline="middle" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="700" fill="#F5F5F7">
     CS
   </text>
 </svg>

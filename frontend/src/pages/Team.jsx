@@ -24,9 +24,9 @@ const Team = () => {
         {teamMembers.map((member) => (
           <article
             key={member.name}
-            className="rounded-2xl border border-border bg-surface p-6 shadow-sm shadow-black/20"
+            className="rounded-2xl border border-border bg-card-gradient p-6 shadow-card-ambient"
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/15 text-lg font-semibold text-primary">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full border border-primary/40 bg-surface text-lg font-semibold text-primary">
               {member.name
                 .split(" ")
                 .map((part) => part[0])

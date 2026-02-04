@@ -30,7 +30,7 @@ const Recruitment = () => {
       </header>
 
       <section className="grid gap-6 md:grid-cols-[1.2fr_0.8fr]">
-        <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm shadow-black/20">
+        <div className="rounded-2xl border border-border bg-card-gradient p-6 shadow-card-ambient">
           <h2 className="text-lg font-semibold text-textPrimary">Open Roles</h2>
           <ul className="mt-4 space-y-4 text-sm text-textSecondary">
             <li className="rounded-xl border border-border bg-elevated p-4">
@@ -49,7 +49,7 @@ const Recruitment = () => {
         </div>
 
         <form
-          className="space-y-4 rounded-2xl border border-border bg-surface p-6 shadow-sm shadow-black/20"
+          className="space-y-4 rounded-2xl border border-border bg-card-gradient p-6 shadow-card-ambient"
           onSubmit={handleSubmit}
         >
           <h2 className="text-lg font-semibold text-textPrimary">Application Form</h2>
@@ -93,7 +93,7 @@ const Recruitment = () => {
           </div>
           <button
             type="submit"
-            className="w-full rounded-full bg-primary px-6 py-3 text-sm font-semibold text-background transition hover:bg-primary/90"
+            className="w-full rounded-full bg-gold-gradient px-6 py-3 text-sm font-semibold text-background shadow-accent-glow transition hover:brightness-105"
           >
             Apply
           </button>
