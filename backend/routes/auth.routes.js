@@ -1,0 +1,28 @@
+import { Router } from "express";
+import rateLimit from "express-rate-limit";
+import {
+  login,
+  logout,
+  me,
+  register,
+} from "../controllers/auth.controller.js";
+import authMiddleware from "../middleware/auth.middleware.js";
+
+const router = Router();
+
+const authLimiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { message: "Too many requests" },
+});
+
+router.use(authLimiter);
+
+router.post("/register", register);
+router.post("/login", login);
+router.get("/me", authMiddleware, me);
+router.post("/logout", logout);
+
+export default router;

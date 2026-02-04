@@ -1,47 +1,30 @@
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
 import mongoose from "mongoose";
-import helmet from "helmet";
-import authRoutes from "./routes/authRoutes.js";
-import errorHandler from "./middleware/errorHandler.js";
+import app from "./app.js";
+import env from "./config/env.js";
 
-dotenv.config();
-
-const app = express();
-const port = process.env.PORT || 5000;
-
-app.use(helmet());
-app.use(cors());
-app.use(express.json({ limit: "10kb" }));
-
-const mongoUri = process.env.MONGO_URI;
-
-if (mongoUri) {
-  mongoose
-    .connect(mongoUri)
-    .then(() => {
-      console.log("Connected to MongoDB");
-    })
-    .catch((error) => {
-      console.error("MongoDB connection error:", error);
-    });
-} else {
-  console.warn("MONGO_URI is not set; skipping MongoDB connection.");
-}
-
-app.get("/health", (_req, res) => {
-  res.json({
-    status: "OK",
-    platform: "Catalyst Society",
-    backend: "Running",
+const startServer = () => {
+  app.listen(env.port, () => {
+    console.log(`Server running on port ${env.port}`);
   });
-});
+};
 
-app.use("/auth", authRoutes);
-
-app.use(errorHandler);
-
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+if (env.useDb) {
+  if (!env.mongoUri) {
+    console.warn("MONGO_URI is not set; skipping MongoDB connection.");
+    startServer();
+  } else {
+    mongoose
+      .connect(env.mongoUri)
+      .then(() => {
+        console.log("Connected to MongoDB");
+        startServer();
+      })
+      .catch((error) => {
+        console.error("MongoDB connection error:", error);
+        startServer();
+      });
+  }
+} else {
+  console.log("MongoDB disabled (USE_DB=false)");
+  startServer();
+}

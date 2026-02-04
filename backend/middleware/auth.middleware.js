@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import env from "../config/env.js";
 
 const authMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization || "";
@@ -11,7 +12,7 @@ const authMiddleware = (req, res, next) => {
   }
 
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    const payload = jwt.verify(token, env.jwtSecret);
     req.user = { id: payload.id, role: payload.role };
     return next();
   } catch (error) {
