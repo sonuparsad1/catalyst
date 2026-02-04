@@ -1,9 +1,10 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import AuthContext from "../context/AuthContext.jsx";
+import AuthContext from "../auth/AuthContext.jsx";
+import { AuthStates } from "../auth/authState.js";
 
 const Login = () => {
-  const { login } = useContext(AuthContext);
+  const { login, authState } = useContext(AuthContext);
   const navigate = useNavigate();
   const [formState, setFormState] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
@@ -31,6 +32,8 @@ const Login = () => {
     }
   };
 
+  const isDbDisabled = authState === AuthStates.DB_DISABLED;
+
   return (
     <section className="flex min-h-[70vh] items-center justify-center px-6 py-16">
       <div className="w-full max-w-md rounded-2xl border border-border bg-card-gradient p-8 shadow-card-ambient">
@@ -53,6 +56,7 @@ const Login = () => {
               value={formState.email}
               onChange={handleChange}
               required
+              disabled={isDbDisabled}
             />
           </div>
           <div>
@@ -66,13 +70,19 @@ const Login = () => {
               value={formState.password}
               onChange={handleChange}
               required
+              disabled={isDbDisabled}
             />
           </div>
+          {isDbDisabled && (
+            <p className="text-sm text-primary">
+              Member login is temporarily unavailable.
+            </p>
+          )}
           {error && <p className="text-sm text-primary">{error}</p>}
           <button
             type="submit"
             className="w-full rounded-full bg-gold-gradient px-5 py-3 text-sm font-semibold text-background shadow-accent-glow transition hover:opacity-90"
-            disabled={submitting}
+            disabled={submitting || isDbDisabled}
           >
             {submitting ? "Signing in..." : "Sign in"}
           </button>

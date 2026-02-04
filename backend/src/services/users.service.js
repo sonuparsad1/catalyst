@@ -1,10 +1,10 @@
-import User from "../models/User.js";
+import User from "../models/User.model.js";
+import { ServiceState, getServiceState } from "../config/serviceState.js";
 import AppError from "../utils/appError.js";
-import env from "../config/env.js";
 
 const ensureDatabaseEnabled = () => {
-  if (!env.useDb) {
-    throw new AppError("Database not enabled", 503, "DB_DISABLED");
+  if (getServiceState() !== ServiceState.READY) {
+    throw new AppError("Service temporarily unavailable", 503, "DB_DISABLED");
   }
 };
 

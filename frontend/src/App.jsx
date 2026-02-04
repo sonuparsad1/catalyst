@@ -17,8 +17,8 @@ import Dashboard from "./pages/Dashboard.jsx";
 import MyTickets from "./pages/MyTickets.jsx";
 import AdminEvents from "./pages/AdminEvents.jsx";
 import AdminScan from "./pages/AdminScan.jsx";
-import ProtectedRoute from "./components/ProtectedRoute";
-import AdminRoute from "./components/AdminRoute";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import AdminRoute from "./components/AdminRoute.jsx";
 
 const App = () => {
   return (
