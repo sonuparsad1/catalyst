@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import { QRCodeCanvas } from "qrcode.react";
 import AuthContext from "../auth/AuthContext.jsx";
 import { listTickets } from "../api/tickets.js";
 
@@ -22,6 +21,14 @@ const MyTickets = () => {
     };
     fetchTickets();
   }, [token]);
+
+  const buildQrSrc = (value, size = 120) => {
+    if (!value) {
+      return "";
+    }
+    const encoded = encodeURIComponent(value);
+    return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encoded}`;
+  };
 
   return (
     <section className="px-6 py-16">
@@ -64,7 +71,19 @@ const MyTickets = () => {
                     <p className="text-sm text-textSecondary">{ticket.event?.venue}</p>
                   </div>
                   <div className="rounded-xl border border-border bg-surface/70 p-3">
-                    <QRCodeCanvas value={ticket.qrData} size={120} />
+                    {ticket.qrData ? (
+                      <img
+                        src={buildQrSrc(ticket.qrData)}
+                        alt={`QR code for ticket ${ticket.ticketCode}`}
+                        width={120}
+                        height={120}
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="flex h-[120px] w-[120px] items-center justify-center text-xs text-textSecondary">
+                        QR unavailable
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="mt-4 flex flex-wrap gap-3 text-xs">
