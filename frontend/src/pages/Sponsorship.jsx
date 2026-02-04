@@ -46,7 +46,7 @@ const Sponsorship = () => {
         {plans.map((plan) => (
           <article
             key={plan.name}
-            className="flex h-full flex-col justify-between rounded-2xl border border-border bg-surface p-6 shadow-sm shadow-black/20"
+            className="flex h-full flex-col justify-between rounded-2xl border border-border bg-card-gradient p-6 shadow-card-ambient"
           >
             <div>
               <h2 className="text-xl font-semibold text-textPrimary">{plan.name}</h2>
@@ -60,7 +60,7 @@ const Sponsorship = () => {
                 ))}
               </ul>
             </div>
-            <button className="mt-6 w-full rounded-full border border-border px-4 py-2 text-sm font-semibold text-textPrimary transition hover:bg-elevated">
+            <button className="mt-6 w-full rounded-full border border-primary/60 bg-surface px-4 py-2 text-sm font-semibold text-textPrimary transition hover:border-primary">
               Become a Sponsor
             </button>
           </article>
