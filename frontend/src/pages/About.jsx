@@ -1,6 +1,10 @@
+import Seo from "../components/Seo.jsx";
+
 const About = () => {
   return (
-    <main className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 py-12">
+    <>
+      <Seo title="About" description="Learn about Catalyst Society's mission and leadership." />
+      <main className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 py-12">
       <header className="space-y-3">
         <p className="text-sm uppercase tracking-[0.4em] text-primary">About Us</p>
         <h1 className="text-3xl font-semibold text-textPrimary sm:text-4xl">
@@ -51,7 +55,8 @@ const About = () => {
           </li>
         </ul>
       </section>
-    </main>
+      </main>
+    </>
   );
 };
 

@@ -1,3 +1,5 @@
+import Seo from "../components/Seo.jsx";
+
 const plans = [
   {
     name: "Bronze",
@@ -30,7 +32,9 @@ const plans = [
 
 const Sponsorship = () => {
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12">
+    <>
+      <Seo title="Sponsorship" description="Partner with Catalyst Society for premium sponsorship packages." />
+      <main className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12">
       <header className="space-y-3">
         <p className="text-sm uppercase tracking-[0.4em] text-primary">Sponsorship</p>
         <h1 className="text-3xl font-semibold text-textPrimary sm:text-4xl">
@@ -66,7 +70,8 @@ const Sponsorship = () => {
           </article>
         ))}
       </section>
-    </main>
+      </main>
+    </>
   );
 };
 

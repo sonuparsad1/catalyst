@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Seo from "../components/Seo.jsx";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -14,11 +15,12 @@ const Contact = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Contact form submission:", formData);
   };
 
   return (
-    <main className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
+    <>
+      <Seo title="Contact" description="Contact Catalyst Society for partnerships and support." />
+      <main className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
       <header className="space-y-3">
         <p className="text-sm uppercase tracking-[0.4em] text-primary">Contact</p>
         <h1 className="text-3xl font-semibold text-textPrimary sm:text-4xl">
@@ -76,7 +78,8 @@ const Contact = () => {
           Send Message
         </button>
       </form>
-    </main>
+      </main>
+    </>
   );
 };
 

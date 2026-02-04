@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Seo from "../components/Seo.jsx";
 
 const Recruitment = () => {
   const [formData, setFormData] = useState({
@@ -17,7 +18,9 @@ const Recruitment = () => {
   };
 
   return (
-    <main className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 py-12">
+    <>
+      <Seo title="Recruitment" description="Join Catalyst Society's elite member community." />
+      <main className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 py-12">
       <header className="space-y-3">
         <p className="text-sm uppercase tracking-[0.4em] text-primary">Recruitment</p>
         <h1 className="text-3xl font-semibold text-textPrimary sm:text-4xl">
@@ -99,7 +102,8 @@ const Recruitment = () => {
           </button>
         </form>
       </section>
-    </main>
+      </main>
+    </>
   );
 };
 

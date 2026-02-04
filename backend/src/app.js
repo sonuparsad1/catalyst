@@ -10,13 +10,32 @@ import registrationsRoutes from "./routes/registrations.routes.js";
 import corsMiddleware from "./middleware/cors.middleware.js";
 import errorMiddleware from "./middleware/error.middleware.js";
 import dbGuard from "./middleware/dbGuard.middleware.js";
+import auditMiddleware from "./middleware/audit.middleware.js";
 
 const app = express();
 app.set("trust proxy", 1);
 
 app.use(corsMiddleware);
 
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        imgSrc: ["'self'", "data:", "https:"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        fontSrc: ["'self'", "data:", "https:"],
+        connectSrc: ["'self'"],
+        objectSrc: ["'none'"],
+        frameAncestors: ["'none'"],
+        baseUri: ["'self'"],
+        formAction: ["'self'"],
+      },
+    },
+    crossOriginResourcePolicy: { policy: "same-site" },
+  })
+);
 app.use(express.json({ limit: "10kb" }));
 
 app.use("/", indexRoutes);
@@ -31,6 +50,7 @@ const apiLimiter = rateLimit({
 });
 
 app.use("/api/v1", apiLimiter);
+app.use("/api/v1", auditMiddleware);
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", dbGuard, usersRoutes);
 app.use("/api/v1/events", dbGuard, eventsRoutes);

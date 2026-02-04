@@ -1,3 +1,5 @@
+import Seo from "../components/Seo.jsx";
+
 const teamMembers = [
   { name: "Ariana Patel", role: "President" },
   { name: "Jordan Lee", role: "Vice President" },
@@ -9,7 +11,9 @@ const teamMembers = [
 
 const Team = () => {
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12">
+    <>
+      <Seo title="Team" description="Meet the Catalyst Society leadership team." />
+      <main className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12">
       <header className="space-y-3">
         <p className="text-sm uppercase tracking-[0.4em] text-primary">Team</p>
         <h1 className="text-3xl font-semibold text-textPrimary sm:text-4xl">
@@ -37,7 +41,8 @@ const Team = () => {
           </article>
         ))}
       </section>
-    </main>
+      </main>
+    </>
   );
 };
 

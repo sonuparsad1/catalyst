@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../auth/AuthContext.jsx";
 import { AuthStates } from "../auth/authState.js";
+import Seo from "../components/Seo.jsx";
 
 const Login = () => {
   const { login, authState } = useContext(AuthContext);
@@ -35,8 +36,10 @@ const Login = () => {
   const isDbDisabled = authState === AuthStates.DB_DISABLED;
 
   return (
-    <section className="flex min-h-[70vh] items-center justify-center px-6 py-16">
-      <div className="w-full max-w-md rounded-2xl border border-border bg-card-gradient p-8 shadow-card-ambient">
+    <>
+      <Seo title="Login" description="Secure member login for Catalyst Society." noIndex />
+      <section className="flex min-h-[70vh] items-center justify-center px-6 py-16">
+        <div className="w-full max-w-md rounded-2xl border border-border bg-card-gradient p-8 shadow-card-ambient">
         <p className="text-xs uppercase tracking-[0.3em] text-muted">Member Access</p>
         <h1 className="mt-3 text-3xl font-semibold text-textPrimary">
           Welcome back
@@ -94,7 +97,8 @@ const Login = () => {
           </Link>
         </p>
       </div>
-    </section>
+      </section>
+    </>
   );
 };
 
