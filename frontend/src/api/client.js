@@ -1,11 +1,16 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+const API_BASE_URL = import.meta.env.VITE_API_URL?.trim();
+const FALLBACK_BASE_URL =
+  typeof window !== "undefined" ? window.location.origin : "";
+const RESOLVED_BASE_URL = API_BASE_URL || FALLBACK_BASE_URL;
 
-if (!API_BASE_URL) {
-  throw new Error("VITE_API_URL is not defined. Check environment variables.");
+if (!RESOLVED_BASE_URL) {
+  throw new Error(
+    "Unable to determine API base URL. Set VITE_API_URL or run in a browser."
+  );
 }
 
 const buildUrl = (path) => {
-  const trimmedBase = API_BASE_URL.replace(/\/+$/, "");
+  const trimmedBase = RESOLVED_BASE_URL.replace(/\/+$/, "");
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   return `${trimmedBase}${normalizedPath}`;
 };
