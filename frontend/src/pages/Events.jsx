@@ -49,9 +49,11 @@ const Events = () => {
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12">
       <header className="space-y-3">
-        <p className="text-sm uppercase tracking-[0.4em] text-cyan-300">Events</p>
-        <h1 className="text-3xl font-semibold text-white sm:text-4xl">Upcoming Events</h1>
-        <p className="text-base text-slate-300">
+        <p className="text-sm uppercase tracking-[0.4em] text-primary">Events</p>
+        <h1 className="text-3xl font-semibold text-textPrimary sm:text-4xl">
+          Upcoming Events
+        </h1>
+        <p className="text-base text-textSecondary">
           Discover flagship events designed to inspire innovation, leadership, and community
           impact.
         </p>

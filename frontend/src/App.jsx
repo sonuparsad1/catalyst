@@ -14,7 +14,7 @@ import Contact from "./pages/Contact.jsx";
 const App = () => {
   return (
     <BrowserRouter>
-      <div className="flex min-h-screen flex-col bg-slate-950 text-slate-100">
+      <div className="flex min-h-screen flex-col bg-background text-textPrimary">
         <Navbar />
         <div className="flex-1">
           <Routes>
