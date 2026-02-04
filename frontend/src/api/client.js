@@ -28,6 +28,7 @@ const normalizeError = async (response) => {
 const request = async ({ path, method = "GET", body, token, headers }) => {
   const response = await fetch(buildUrl(path), {
     method,
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),

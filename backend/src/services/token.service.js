@@ -4,13 +4,13 @@ import AppError from "../utils/appError.js";
 
 const ensureJwtSecret = () => {
   if (!env.jwtSecret) {
-    throw new AppError("Service unavailable", 503, "JWT_UNAVAILABLE");
+    throw new AppError("Internal server error", 500, "JWT_UNAVAILABLE");
   }
 };
 
 const ensureRefreshSecret = () => {
   if (!env.jwtRefreshSecret) {
-    throw new AppError("Service unavailable", 503, "REFRESH_UNAVAILABLE");
+    throw new AppError("Internal server error", 500, "REFRESH_UNAVAILABLE");
   }
 };
 

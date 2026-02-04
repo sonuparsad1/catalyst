@@ -21,7 +21,11 @@ const Login = () => {
       await login(formState.email, formState.password);
       navigate("/dashboard");
     } catch (err) {
-      setError("Invalid credentials");
+      if (err?.code === "DB_DISABLED") {
+        setError("Login temporarily unavailable. Please try later.");
+      } else {
+        setError("Invalid credentials");
+      }
     } finally {
       setSubmitting(false);
     }
