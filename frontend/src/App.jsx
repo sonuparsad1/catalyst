@@ -9,6 +9,7 @@ import AdminLayout from "./components/admin/AdminLayout.jsx";
 const Home = lazy(() => import("./pages/Home.jsx"));
 const About = lazy(() => import("./pages/About.jsx"));
 const Events = lazy(() => import("./pages/Events.jsx"));
+const EventDetail = lazy(() => import("./pages/EventDetail.jsx"));
 const Education = lazy(() => import("./pages/Education.jsx"));
 const Sports = lazy(() => import("./pages/Sports.jsx"));
 const Recruitment = lazy(() => import("./pages/Recruitment.jsx"));
@@ -18,6 +19,11 @@ const Contact = lazy(() => import("./pages/Contact.jsx"));
 const Login = lazy(() => import("./pages/Login.jsx"));
 const Register = lazy(() => import("./pages/Register.jsx"));
 const Dashboard = lazy(() => import("./pages/Dashboard.jsx"));
+const Checkout = lazy(() => import("./pages/Checkout.jsx"));
+const Payments = lazy(() => import("./pages/Payments.jsx"));
+const Invoices = lazy(() => import("./pages/Invoices.jsx"));
+const Refunds = lazy(() => import("./pages/Refunds.jsx"));
+const MyTickets = lazy(() => import("./pages/MyTickets.jsx"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard.jsx"));
 const AdminEvents = lazy(() => import("./pages/admin/AdminEvents.jsx"));
 const AdminTickets = lazy(() => import("./pages/admin/AdminTickets.jsx"));
@@ -30,30 +36,6 @@ const AdminSettings = lazy(() => import("./pages/admin/AdminSettings.jsx"));
 const AppShell = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
-import Home from "./pages/Home.jsx";
-import About from "./pages/About.jsx";
-import Events from "./pages/Events.jsx";
-import EventDetail from "./pages/EventDetail.jsx";
-import Education from "./pages/Education.jsx";
-import Sports from "./pages/Sports.jsx";
-import Recruitment from "./pages/Recruitment.jsx";
-import Sponsorship from "./pages/Sponsorship.jsx";
-import Team from "./pages/Team.jsx";
-import Contact from "./pages/Contact.jsx";
-import Login from "./pages/Login.jsx";
-import Register from "./pages/Register.jsx";
-import Dashboard from "./pages/Dashboard.jsx";
-import Checkout from "./pages/Checkout.jsx";
-import Payments from "./pages/Payments.jsx";
-import Invoices from "./pages/Invoices.jsx";
-import Refunds from "./pages/Refunds.jsx";
-import AdminAnalytics from "./pages/AdminAnalytics.jsx";
-import AdminPayments from "./pages/AdminPayments.jsx";
-import MyTickets from "./pages/MyTickets.jsx";
-import AdminEvents from "./pages/AdminEvents.jsx";
-import AdminScan from "./pages/AdminScan.jsx";
-import ProtectedRoute from "./components/ProtectedRoute.jsx";
-import AdminRoute from "./components/AdminRoute.jsx";
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-textPrimary">
@@ -88,27 +70,14 @@ import AdminRoute from "./components/AdminRoute.jsx";
               }
             />
             <Route
-              path="/admin"
-              element={
-                <AdminRoute>
-                  <AdminLayout />
-                </AdminRoute>
-              }
-            >
-              <Route index element={<Navigate to="dashboard" replace />} />
-              <Route path="dashboard" element={<AdminDashboard />} />
-              <Route path="events" element={<AdminEvents />} />
-              <Route path="tickets" element={<AdminTickets />} />
-              <Route path="attendance" element={<AdminAttendance />} />
-              <Route path="payments" element={<AdminPayments />} />
-              <Route path="refunds" element={<AdminRefunds />} />
-              <Route path="users" element={<AdminUsers />} />
-              <Route path="settings" element={<AdminSettings />} />
-            </Route>
               path="/checkout"
               element={
                 <ProtectedRoute>
                   <Checkout />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/tickets"
               element={
                 <ProtectedRoute>
@@ -141,34 +110,23 @@ import AdminRoute from "./components/AdminRoute.jsx";
               }
             />
             <Route
-              path="/admin/analytics"
-              element={
-                <ProtectedRoute>
-                  <AdminAnalytics />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/payments"
-              element={
-                <ProtectedRoute>
-                  <AdminPayments />
-                </ProtectedRoute>
-              path="/admin/events"
+              path="/admin"
               element={
                 <AdminRoute>
-                  <AdminEvents />
+                  <AdminLayout />
                 </AdminRoute>
               }
-            />
-            <Route
-              path="/admin/scan"
-              element={
-                <AdminRoute>
-                  <AdminScan />
-                </AdminRoute>
-              }
-            />
+            >
+              <Route index element={<Navigate to="dashboard" replace />} />
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="events" element={<AdminEvents />} />
+              <Route path="tickets" element={<AdminTickets />} />
+              <Route path="attendance" element={<AdminAttendance />} />
+              <Route path="payments" element={<AdminPayments />} />
+              <Route path="refunds" element={<AdminRefunds />} />
+              <Route path="users" element={<AdminUsers />} />
+              <Route path="settings" element={<AdminSettings />} />
+            </Route>
           </Routes>
         </Suspense>
       </div>

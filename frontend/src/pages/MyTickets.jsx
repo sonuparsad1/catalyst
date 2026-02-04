@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { QRCodeCanvas } from "qrcode.react";
-import AuthContext from "../context/AuthContext.jsx";
+import AuthContext from "../auth/AuthContext.jsx";
 import { listTickets } from "../api/tickets.js";
 
 const MyTickets = () => {

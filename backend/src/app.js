@@ -16,6 +16,7 @@ import scanRoutes from "./routes/scan.routes.js";
 import errorMiddleware from "./middleware/error.middleware.js";
 import dbGuard from "./middleware/dbGuard.middleware.js";
 import auditMiddleware from "./middleware/audit.middleware.js";
+import corsMiddleware from "./middleware/cors.middleware.js";
 
 const app = express();
 app.set("trust proxy", 1);
