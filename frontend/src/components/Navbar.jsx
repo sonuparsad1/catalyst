@@ -99,6 +99,9 @@ const Navbar = () => {
               >
                 Dashboard
               </NavLink>
+              {user?.role === "admin" && (
+                <NavLink
+                  to="/admin/dashboard"
               {user?.role === "admin" ? (
                 <NavLink
                   to="/admin/events"
@@ -112,6 +115,7 @@ const Navbar = () => {
                 >
                   Admin
                 </NavLink>
+              )}
               ) : null}
               <button
                 type="button"
@@ -205,6 +209,9 @@ const Navbar = () => {
                 >
                   Dashboard
                 </NavLink>
+                {user?.role === "admin" && (
+                  <NavLink
+                    to="/admin/dashboard"
                 {user?.role === "admin" ? (
                   <NavLink
                     to="/admin/events"
@@ -219,6 +226,7 @@ const Navbar = () => {
                   >
                     Admin
                   </NavLink>
+                )}
                 ) : null}
                 <button
                   type="button"

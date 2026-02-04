@@ -1,4 +1,5 @@
 import EventCard from "../components/EventCard.jsx";
+import Seo from "../components/Seo.jsx";
 
 const upcomingEvents = [
   {
@@ -26,8 +27,10 @@ const upcomingEvents = [
 
 const Home = () => {
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-col gap-16 px-6 py-12">
-      <section className="grid gap-10 rounded-3xl border border-border bg-card-gradient p-10 shadow-card-ambient lg:grid-cols-[1.1fr_0.9fr]">
+    <>
+      <Seo title="Home" description="Catalyst Society is a luxury community for ambitious leaders and innovators." />
+      <main className="mx-auto flex w-full max-w-6xl flex-col gap-16 px-6 py-12">
+        <section className="grid gap-10 rounded-3xl border border-border bg-card-gradient p-10 shadow-card-ambient lg:grid-cols-[1.1fr_0.9fr]">
         <div className="space-y-6">
           <p className="text-sm uppercase tracking-[0.4em] text-primary">
             Ignite • Innovate • Lead
@@ -83,7 +86,8 @@ const Home = () => {
           ))}
         </div>
       </section>
-    </main>
+      </main>
+    </>
   );
 };
 

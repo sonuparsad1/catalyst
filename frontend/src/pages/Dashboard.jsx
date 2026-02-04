@@ -1,4 +1,6 @@
 import { useContext } from "react";
+import AuthContext from "../auth/AuthContext.jsx";
+import Seo from "../components/Seo.jsx";
 import { Link } from "react-router-dom";
 import AuthContext from "../context/AuthContext.jsx";
 
@@ -39,6 +41,14 @@ const Dashboard = () => {
   const { user, logout } = useContext(AuthContext);
 
   return (
+    <>
+      <Seo title="Dashboard" description="Member dashboard for Catalyst Society." noIndex />
+      <section className="px-6 py-16">
+        <div className="mx-auto w-full max-w-4xl">
+          <div className="rounded-2xl border border-border bg-card-gradient p-8 shadow-card-ambient">
+          <p className="text-xs uppercase tracking-[0.3em] text-muted">
+            Member Dashboard
+          </p>
     <section className="px-6 py-16">
       <div className="mx-auto w-full max-w-5xl">
       <div className="mx-auto w-full max-w-4xl space-y-8">
@@ -113,7 +123,8 @@ const Dashboard = () => {
           </button>
         </div>
       </div>
-    </section>
+      </section>
+    </>
   );
 };
 

@@ -1,4 +1,5 @@
 import EventCard from "../components/EventCard.jsx";
+import Seo from "../components/Seo.jsx";
 
 const educationEvents = [
   {
@@ -47,7 +48,9 @@ const educationEvents = [
 
 const Education = () => {
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12">
+    <>
+      <Seo title="Education" description="Luxury workshops and learning experiences at Catalyst Society." />
+      <main className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12">
       <header className="space-y-3">
         <p className="text-sm uppercase tracking-[0.4em] text-primary">Education</p>
         <h1 className="text-3xl font-semibold text-textPrimary sm:text-4xl">
@@ -62,7 +65,8 @@ const Education = () => {
           <EventCard key={event.title} {...event} />
         ))}
       </section>
-    </main>
+      </main>
+    </>
   );
 };
 

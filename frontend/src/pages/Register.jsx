@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../auth/AuthContext.jsx";
 import { AuthStates } from "../auth/authState.js";
+import Seo from "../components/Seo.jsx";
 
 const Register = () => {
   const { register, authState } = useContext(AuthContext);
@@ -38,8 +39,10 @@ const Register = () => {
   const isDbDisabled = authState === AuthStates.DB_DISABLED;
 
   return (
-    <section className="flex min-h-[70vh] items-center justify-center px-6 py-16">
-      <div className="w-full max-w-md rounded-2xl border border-border bg-card-gradient p-8 shadow-card-ambient">
+    <>
+      <Seo title="Register" description="Apply for Catalyst Society membership." noIndex />
+      <section className="flex min-h-[70vh] items-center justify-center px-6 py-16">
+        <div className="w-full max-w-md rounded-2xl border border-border bg-card-gradient p-8 shadow-card-ambient">
         <p className="text-xs uppercase tracking-[0.3em] text-muted">
           Join the Circle
         </p>
@@ -114,7 +117,8 @@ const Register = () => {
           </Link>
         </p>
       </div>
-    </section>
+      </section>
+    </>
   );
 };
 
