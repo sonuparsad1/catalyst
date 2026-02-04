@@ -2,14 +2,18 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import helmet from "helmet";
+import authRoutes from "./routes/authRoutes.js";
+import errorHandler from "./middleware/errorHandler.js";
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5000;
 
+app.use(helmet());
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: "10kb" }));
 
 const mongoUri = process.env.MONGO_URI;
 
@@ -33,6 +37,10 @@ app.get("/health", (_req, res) => {
     backend: "Running",
   });
 });
+
+app.use("/auth", authRoutes);
+
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
