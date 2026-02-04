@@ -28,6 +28,7 @@ const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard.jsx"));
 const AdminEvents = lazy(() => import("./pages/admin/AdminEvents.jsx"));
 const AdminTickets = lazy(() => import("./pages/admin/AdminTickets.jsx"));
 const AdminAttendance = lazy(() => import("./pages/admin/AdminAttendance.jsx"));
+const AdminScan = lazy(() => import("./pages/AdminScan.jsx"));
 const AdminPayments = lazy(() => import("./pages/admin/AdminPayments.jsx"));
 const AdminRefunds = lazy(() => import("./pages/admin/AdminRefunds.jsx"));
 const AdminUsers = lazy(() => import("./pages/admin/AdminUsers.jsx"));
@@ -122,6 +123,7 @@ const AppShell = () => {
               <Route path="events" element={<AdminEvents />} />
               <Route path="tickets" element={<AdminTickets />} />
               <Route path="attendance" element={<AdminAttendance />} />
+              <Route path="scan" element={<AdminScan />} />
               <Route path="payments" element={<AdminPayments />} />
               <Route path="refunds" element={<AdminRefunds />} />
               <Route path="users" element={<AdminUsers />} />
