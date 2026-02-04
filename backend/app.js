@@ -12,20 +12,26 @@ import errorMiddleware from "./middleware/error.middleware.js";
 
 const app = express();
 
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://catalystsociety.vercel.app",
-      "https://catalyst-mvbin20ec-sonu-parsads-projects.vercel.app",
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  })
-);
+const allowedOrigins = new Set([
+  "http://localhost:5173",
+  "https://catalystsociety.vercel.app",
+  "https://catalyst-mvbin20ec-sonu-parsads-projects.vercel.app",
+]);
 
-app.options("*", cors());
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin) {
+      return callback(null, false);
+    }
+
+    return callback(null, allowedOrigins.has(origin));
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 app.use(helmet());
 app.use(express.json({ limit: "10kb" }));
