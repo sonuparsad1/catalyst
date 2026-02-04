@@ -11,6 +11,7 @@ import registrationsRoutes from "./routes/registrations.routes.js";
 import errorMiddleware from "./middleware/error.middleware.js";
 
 const app = express();
+app.set("trust proxy", 1);
 
 const allowedOrigins = new Set([
   "http://localhost:5173",
@@ -41,6 +42,7 @@ app.use("/", indexRoutes);
 const apiLimiter = rateLimit({
   windowMs: env.rateLimitWindowMs,
   max: env.rateLimitMax,
+  keyGenerator: (req) => req.ip,
   standardHeaders: true,
   legacyHeaders: false,
   message: { message: "Too many requests", code: "RATE_LIMITED" },
