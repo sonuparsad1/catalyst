@@ -1,6 +1,7 @@
 import {
   getProfile,
   loginUser,
+  refreshAccessToken,
   registerUser,
 } from "../services/auth.service.js";
 
@@ -35,4 +36,13 @@ const logout = (_req, res) => {
   res.json({ message: "Logged out" });
 };
 
-export { login, logout, me, register };
+const refresh = async (req, res, next) => {
+  try {
+    const result = await refreshAccessToken(req.body?.refreshToken);
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { login, logout, me, refresh, register };

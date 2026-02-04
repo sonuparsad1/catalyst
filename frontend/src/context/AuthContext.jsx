@@ -1,11 +1,13 @@
 import { createContext, useCallback, useEffect, useMemo, useState } from "react";
 
-import API_BASE_URL from "../config/apiBase";
+import {
+  login as loginRequest,
+  logout as logoutRequest,
+  me,
+  register as registerRequest,
+} from "../api/auth.js";
 
 const AuthContext = createContext(null);
-
-const getAuthHeader = (token) =>
-  token ? { Authorization: `Bearer ${token}` } : {};
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(() => localStorage.getItem("authToken"));
@@ -15,16 +17,7 @@ export const AuthProvider = ({ children }) => {
   const fetchProfile = useCallback(
     async (activeToken) => {
       try {
-        const response = await fetch(`${API_BASE_URL}/auth/me`, {
-          headers: {
-            "Content-Type": "application/json",
-            ...getAuthHeader(activeToken),
-          },
-        });
-        if (!response.ok) {
-          throw new Error("Unauthorized");
-        }
-        const data = await response.json();
+        const data = await me(activeToken);
         setUser(data);
       } catch (error) {
         setUser(null);
@@ -47,41 +40,19 @@ export const AuthProvider = ({ children }) => {
   }, [fetchProfile, token]);
 
   const login = useCallback(async (email, password) => {
-    const response = await fetch(`${API_BASE_URL}/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-    if (!response.ok) {
-      throw new Error("Invalid credentials");
-    }
-    const data = await response.json();
+    const data = await loginRequest({ email, password });
     localStorage.setItem("authToken", data.token);
     setToken(data.token);
     await fetchProfile(data.token);
   }, [fetchProfile]);
 
   const register = useCallback(async (name, email, password) => {
-    const response = await fetch(`${API_BASE_URL}/auth/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
-    });
-    if (!response.ok) {
-      throw new Error("Unable to register");
-    }
-    return response.json();
+    return registerRequest({ name, email, password });
   }, []);
 
   const logout = useCallback(async () => {
     try {
-      await fetch(`${API_BASE_URL}/auth/logout`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...getAuthHeader(token),
-        },
-      });
+      await logoutRequest(token);
     } finally {
       localStorage.removeItem("authToken");
       setToken(null);

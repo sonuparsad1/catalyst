@@ -4,6 +4,7 @@ import {
   login,
   logout,
   me,
+  refresh,
   register,
 } from "../controllers/auth.controller.js";
 import authMiddleware from "../middleware/auth.middleware.js";
@@ -22,6 +23,7 @@ router.use(authLimiter);
 
 router.post("/register", register);
 router.post("/login", login);
+router.post("/refresh", refresh);
 router.get("/me", authMiddleware, me);
 router.post("/logout", logout);
 
