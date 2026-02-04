@@ -20,6 +20,7 @@ const env = {
   cookieName: process.env.COOKIE_NAME || "accessToken",
   cookieSecure: process.env.COOKIE_SECURE === "true",
   cookieDomain: process.env.COOKIE_DOMAIN || "",
+  passwordPepper: process.env.PASSWORD_PEPPER || "",
   rateLimitWindowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
   rateLimitMax: Number(process.env.RATE_LIMIT_MAX) || 100,
   stripeSecretKey: process.env.STRIPE_SECRET_KEY || "",
@@ -32,6 +33,7 @@ const env = {
   mailPass: process.env.MAIL_PASS || "",
   mailFrom: process.env.MAIL_FROM || "no-reply@catalystsociety.com",
   dashboardBaseUrl: process.env.DASHBOARD_BASE_URL || "",
+  qrSecret: process.env.QR_SECRET || "",
 };
 
 export default env;

@@ -4,6 +4,7 @@ import Footer from "./components/Footer.jsx";
 import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
 import Events from "./pages/Events.jsx";
+import EventDetail from "./pages/EventDetail.jsx";
 import Education from "./pages/Education.jsx";
 import Sports from "./pages/Sports.jsx";
 import Recruitment from "./pages/Recruitment.jsx";
@@ -19,7 +20,11 @@ import Invoices from "./pages/Invoices.jsx";
 import Refunds from "./pages/Refunds.jsx";
 import AdminAnalytics from "./pages/AdminAnalytics.jsx";
 import AdminPayments from "./pages/AdminPayments.jsx";
+import MyTickets from "./pages/MyTickets.jsx";
+import AdminEvents from "./pages/AdminEvents.jsx";
+import AdminScan from "./pages/AdminScan.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import AdminRoute from "./components/AdminRoute.jsx";
 
 const App = () => {
   return (
@@ -31,6 +36,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/events" element={<Events />} />
+            <Route path="/events/:id" element={<EventDetail />} />
             <Route path="/education" element={<Education />} />
             <Route path="/sports" element={<Sports />} />
             <Route path="/recruitment" element={<Recruitment />} />
@@ -52,6 +58,10 @@ const App = () => {
               element={
                 <ProtectedRoute>
                   <Checkout />
+              path="/tickets"
+              element={
+                <ProtectedRoute>
+                  <MyTickets />
                 </ProtectedRoute>
               }
             />
@@ -93,6 +103,19 @@ const App = () => {
                 <ProtectedRoute>
                   <AdminPayments />
                 </ProtectedRoute>
+              path="/admin/events"
+              element={
+                <AdminRoute>
+                  <AdminEvents />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/scan"
+              element={
+                <AdminRoute>
+                  <AdminScan />
+                </AdminRoute>
               }
             />
           </Routes>

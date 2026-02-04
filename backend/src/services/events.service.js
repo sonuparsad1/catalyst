@@ -1,14 +1,29 @@
-import Event from "../models/Event.js";
+import Event from "../models/Event.model.js";
 import AppError from "../utils/appError.js";
-import env from "../config/env.js";
 
 const ensureDatabaseEnabled = () => {
-  if (!env.useDb) {
-    throw new AppError("Database not enabled", 503, "DB_DISABLED");
+  if (getServiceState() !== ServiceState.READY) {
+    throw new AppError("Service temporarily unavailable", 503, "DB_DISABLED");
   }
 };
 
-const listEvents = async () => {
+const toEventResponse = (event) => ({
+  id: event.id,
+  title: event.title,
+  description: event.description,
+  category: event.category,
+  date: event.date,
+  time: event.time,
+  venue: event.venue,
+  price: event.price,
+  totalSeats: event.totalSeats,
+  seatsAvailable: event.seatsAvailable,
+  status: event.status,
+  createdBy: event.createdBy,
+  createdAt: event.createdAt,
+});
+
+const listEvents = async ({ includeAll = false } = {}) => {
   ensureDatabaseEnabled();
   const events = await Event.find({ isPublished: true }).sort({ startsAt: 1 });
   return events.map((event) => ({
@@ -22,12 +37,15 @@ const listEvents = async () => {
     ticketPrice: event.ticketPrice,
     currency: event.currency,
   }));
+  const filter = includeAll ? {} : { status: "PUBLISHED" };
+  const events = await Event.find(filter).sort({ date: 1, time: 1 });
+  return events.map(toEventResponse);
 };
 
-const getEventById = async (eventId) => {
+const getEventById = async (eventId, { includeUnpublished = false } = {}) => {
   ensureDatabaseEnabled();
   const event = await Event.findById(eventId);
-  if (!event || !event.isPublished) {
+  if (!event || (!includeUnpublished && event.status !== "PUBLISHED")) {
     throw new AppError("Event not found", 404, "EVENT_NOT_FOUND");
   }
 
@@ -42,6 +60,7 @@ const getEventById = async (eventId) => {
     ticketPrice: event.ticketPrice,
     currency: event.currency,
   };
+  return toEventResponse(event);
 };
 
 const createEvent = async (payload, userId) => {
@@ -55,9 +74,16 @@ const createEvent = async (payload, userId) => {
     capacity,
     ticketPrice,
     currency,
+    category,
+    date,
+    time,
+    venue,
+    price,
+    totalSeats,
+    status,
   } = payload;
 
-  if (!title || !description || !location || !startsAt || !endsAt) {
+  if (!title || !description || !category || !date || !time || !venue) {
     throw new AppError("Invalid event data", 400, "VALIDATION_ERROR");
   }
 
@@ -70,8 +96,15 @@ const createEvent = async (payload, userId) => {
     capacity: Number(capacity) || 0,
     ticketPrice: Number(ticketPrice) || 0,
     currency: currency ? currency.toUpperCase() : "INR",
+    category,
+    date,
+    time,
+    venue: venue.trim(),
+    price: Number(price) || 0,
+    totalSeats: Number(totalSeats) || 0,
+    seatsAvailable: Number(totalSeats) || 0,
     createdBy: userId,
-    isPublished: true,
+    status: status || "DRAFT",
   });
 
   return {
@@ -85,6 +118,60 @@ const createEvent = async (payload, userId) => {
     ticketPrice: event.ticketPrice,
     currency: event.currency,
   };
+  return toEventResponse(event);
 };
 
-export { createEvent, getEventById, listEvents };
+const updateEvent = async (eventId, payload) => {
+  ensureDatabaseEnabled();
+  const event = await Event.findById(eventId);
+  if (!event) {
+    throw new AppError("Event not found", 404, "EVENT_NOT_FOUND");
+  }
+
+  const updates = { ...payload };
+
+  if (updates.title) {
+    updates.title = updates.title.trim();
+  }
+
+  if (updates.description) {
+    updates.description = updates.description.trim();
+  }
+
+  if (updates.venue) {
+    updates.venue = updates.venue.trim();
+  }
+
+  if (updates.totalSeats !== undefined) {
+    const newTotalSeats = Number(updates.totalSeats);
+    if (Number.isNaN(newTotalSeats) || newTotalSeats < 0) {
+      throw new AppError("Invalid seat count", 400, "VALIDATION_ERROR");
+    }
+    const soldSeats = event.totalSeats - event.seatsAvailable;
+    if (newTotalSeats < soldSeats) {
+      throw new AppError("Total seats below sold count", 400, "SEATS_INVALID");
+    }
+    updates.totalSeats = newTotalSeats;
+    updates.seatsAvailable = newTotalSeats - soldSeats;
+  }
+
+  if (updates.price !== undefined) {
+    updates.price = Number(updates.price);
+  }
+
+  Object.assign(event, updates);
+  await event.save();
+
+  return toEventResponse(event);
+};
+
+const deleteEvent = async (eventId) => {
+  ensureDatabaseEnabled();
+  const event = await Event.findById(eventId);
+  if (!event) {
+    throw new AppError("Event not found", 404, "EVENT_NOT_FOUND");
+  }
+  await event.deleteOne();
+};
+
+export { createEvent, deleteEvent, getEventById, listEvents, updateEvent };

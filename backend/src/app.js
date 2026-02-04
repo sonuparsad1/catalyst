@@ -1,5 +1,4 @@
 import express from "express";
-import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import env from "./config/env.js";
@@ -12,36 +11,15 @@ import paymentsRoutes from "./routes/payments.routes.js";
 import webhooksRoutes from "./routes/webhooks.routes.js";
 import refundsRoutes from "./routes/refunds.routes.js";
 import analyticsRoutes from "./routes/analytics.routes.js";
+import ticketsRoutes from "./routes/tickets.routes.js";
+import scanRoutes from "./routes/scan.routes.js";
 import errorMiddleware from "./middleware/error.middleware.js";
 import dbGuard from "./middleware/dbGuard.middleware.js";
 
 const app = express();
 app.set("trust proxy", 1);
 
-const defaultOrigins = [
-  "http://localhost:5173",
-  "https://catalystsociety.vercel.app",
-  "https://catalyst-mvbin20ec-sonu-parsads-projects.vercel.app",
-];
-
-const allowedOrigins = new Set(
-  env.corsOrigins.length > 0 ? env.corsOrigins : defaultOrigins
-);
-
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin) {
-      return callback(null, false);
-    }
-
-    return callback(null, allowedOrigins.has(origin));
-  },
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: env.corsAllowCredentials || true,
-};
-
-app.use(cors(corsOptions));
+app.use(corsMiddleware);
 
 app.use(helmet());
 app.use(
@@ -73,6 +51,8 @@ app.use("/api/v1/payments", dbGuard, paymentsRoutes);
 app.use("/api/v1/webhooks", dbGuard, webhooksRoutes);
 app.use("/api/v1/refunds", dbGuard, refundsRoutes);
 app.use("/api/v1/analytics", dbGuard, analyticsRoutes);
+app.use("/api/v1/tickets", dbGuard, ticketsRoutes);
+app.use("/api/v1/scan", dbGuard, scanRoutes);
 
 app.use(errorMiddleware);
 

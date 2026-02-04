@@ -1,10 +1,12 @@
-import env from "../config/env.js";
+import { ServiceState, getServiceState } from "../config/serviceState.js";
 
 const dbGuard = (_req, res, next) => {
-  if (!env.useDb) {
+  const state = getServiceState();
+  if (state !== ServiceState.READY) {
+    const code = state === ServiceState.DB_DISABLED ? "DB_DISABLED" : "DEGRADED";
     return res
       .status(503)
-      .json({ message: "Database not enabled", code: "DB_DISABLED" });
+      .json({ message: "Service temporarily unavailable", code });
   }
 
   return next();
