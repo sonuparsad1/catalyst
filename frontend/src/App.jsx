@@ -4,6 +4,7 @@ import Footer from "./components/Footer.jsx";
 import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
 import Events from "./pages/Events.jsx";
+import EventDetail from "./pages/EventDetail.jsx";
 import Education from "./pages/Education.jsx";
 import Sports from "./pages/Sports.jsx";
 import Recruitment from "./pages/Recruitment.jsx";
@@ -13,7 +14,11 @@ import Contact from "./pages/Contact.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
+import MyTickets from "./pages/MyTickets.jsx";
+import AdminEvents from "./pages/AdminEvents.jsx";
+import AdminScan from "./pages/AdminScan.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import AdminRoute from "./components/AdminRoute.jsx";
 
 const App = () => {
   return (
@@ -25,6 +30,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/events" element={<Events />} />
+            <Route path="/events/:id" element={<EventDetail />} />
             <Route path="/education" element={<Education />} />
             <Route path="/sports" element={<Sports />} />
             <Route path="/recruitment" element={<Recruitment />} />
@@ -39,6 +45,30 @@ const App = () => {
                 <ProtectedRoute>
                   <Dashboard />
                 </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/tickets"
+              element={
+                <ProtectedRoute>
+                  <MyTickets />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/events"
+              element={
+                <AdminRoute>
+                  <AdminEvents />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/scan"
+              element={
+                <AdminRoute>
+                  <AdminScan />
+                </AdminRoute>
               }
             />
           </Routes>
