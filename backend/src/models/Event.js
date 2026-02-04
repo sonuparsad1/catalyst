@@ -17,6 +17,6 @@ const eventSchema = new mongoose.Schema(
 eventSchema.index({ startsAt: 1 });
 eventSchema.index({ isPublished: 1 });
 
-const Event = mongoose.model("Event", eventSchema);
+const Event = mongoose.models.Event || mongoose.model("Event", eventSchema);
 
 export default Event;

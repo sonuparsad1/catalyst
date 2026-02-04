@@ -1,9 +1,10 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import AuthContext from "../context/AuthContext.jsx";
+import AuthContext from "../auth/AuthContext.jsx";
+import { AuthStates } from "../auth/authState.js";
 
 const Register = () => {
-  const { register } = useContext(AuthContext);
+  const { register, authState } = useContext(AuthContext);
   const navigate = useNavigate();
   const [formState, setFormState] = useState({
     name: "",
@@ -34,6 +35,8 @@ const Register = () => {
     }
   };
 
+  const isDbDisabled = authState === AuthStates.DB_DISABLED;
+
   return (
     <section className="flex min-h-[70vh] items-center justify-center px-6 py-16">
       <div className="w-full max-w-md rounded-2xl border border-border bg-card-gradient p-8 shadow-card-ambient">
@@ -58,6 +61,7 @@ const Register = () => {
               value={formState.name}
               onChange={handleChange}
               required
+              disabled={isDbDisabled}
             />
           </div>
           <div>
@@ -71,6 +75,7 @@ const Register = () => {
               value={formState.email}
               onChange={handleChange}
               required
+              disabled={isDbDisabled}
             />
           </div>
           <div>
@@ -84,14 +89,20 @@ const Register = () => {
               value={formState.password}
               onChange={handleChange}
               required
+              disabled={isDbDisabled}
             />
           </div>
+          {isDbDisabled && (
+            <p className="text-sm text-primary">
+              Registration is temporarily unavailable.
+            </p>
+          )}
           {error && <p className="text-sm text-primary">{error}</p>}
           {success && <p className="text-sm text-textSecondary">{success}</p>}
           <button
             type="submit"
             className="w-full rounded-full bg-gold-gradient px-5 py-3 text-sm font-semibold text-background shadow-accent-glow transition hover:opacity-90"
-            disabled={submitting}
+            disabled={submitting || isDbDisabled}
           >
             {submitting ? "Submitting..." : "Create account"}
           </button>
