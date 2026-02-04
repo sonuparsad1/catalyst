@@ -1,8 +1,8 @@
 import { createContext, useCallback, useEffect, useMemo, useState } from "react";
 
-const AuthContext = createContext(null);
+import API_BASE_URL from "../config/apiBase";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+const AuthContext = createContext(null);
 
 const getAuthHeader = (token) =>
   token ? { Authorization: `Bearer ${token}` } : {};
