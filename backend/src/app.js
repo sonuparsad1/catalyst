@@ -13,6 +13,10 @@ import refundsRoutes from "./routes/refunds.routes.js";
 import analyticsRoutes from "./routes/analytics.routes.js";
 import ticketsRoutes from "./routes/tickets.routes.js";
 import scanRoutes from "./routes/scan.routes.js";
+import contentRoutes from "./cms/Content.routes.js";
+import memberRoutes from "./members/Member.routes.js";
+import adminDashboardRoutes from "./admin/AdminDashboard.routes.js";
+import mediaRoutes from "./media/Media.routes.js";
 import errorMiddleware from "./middleware/error.middleware.js";
 import dbGuard from "./middleware/dbGuard.middleware.js";
 import auditMiddleware from "./middleware/audit.middleware.js";
@@ -76,6 +80,10 @@ app.use("/api/v1/refunds", dbGuard, refundsRoutes);
 app.use("/api/v1/analytics", dbGuard, analyticsRoutes);
 app.use("/api/v1/tickets", dbGuard, ticketsRoutes);
 app.use("/api/v1/scan", dbGuard, scanRoutes);
+app.use("/api/v1/cms", dbGuard, contentRoutes);
+app.use("/api/v1/members", dbGuard, memberRoutes);
+app.use("/api/v1/admin/dashboard", dbGuard, adminDashboardRoutes);
+app.use("/api/v1/media", dbGuard, mediaRoutes);
 
 app.use(errorMiddleware);
 
