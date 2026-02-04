@@ -12,22 +12,22 @@ import errorMiddleware from "./middleware/error.middleware.js";
 
 const app = express();
 
-app.use(helmet());
 app.use(
   cors({
-    origin:
-      env.corsOrigins.length > 0
-        ? (origin, callback) => {
-            if (!origin || env.corsOrigins.includes(origin)) {
-              callback(null, true);
-            } else {
-              callback(new Error("Not allowed by CORS"));
-            }
-          }
-        : false,
-    credentials: env.corsAllowCredentials,
+    origin: [
+      "http://localhost:5173",
+      "https://catalystsociety.vercel.app",
+      "https://catalyst-mvbin20ec-sonu-parsads-projects.vercel.app",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
   })
 );
+
+app.options("*", cors());
+
+app.use(helmet());
 app.use(express.json({ limit: "10kb" }));
 
 app.use("/", indexRoutes);
