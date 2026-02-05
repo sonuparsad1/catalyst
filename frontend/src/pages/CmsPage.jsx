@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import Seo from "../components/Seo.jsx";
-import { getPageBySlug } from "../api/cms.js";
+import { getCorePageByKey, getPageBySlug } from "../api/cms.js";
 
 const SectionHero = ({ content }) => (
   <section className="rounded-3xl border border-border bg-card-gradient px-6 py-12 text-center text-textPrimary shadow-card-ambient">
@@ -112,9 +112,10 @@ const sectionRenderers = {
   cta: SectionCta,
 };
 
-const CmsPage = ({ slug: slugProp }) => {
+const CmsPage = ({ slug: slugProp, pageKey, fallback, children }) => {
   const params = useParams();
   const slug = slugProp || params.slug;
+  const resolvedKey = pageKey || slug;
   const [page, setPage] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -125,7 +126,7 @@ const CmsPage = ({ slug: slugProp }) => {
       setLoading(true);
       setError("");
       try {
-        const data = await getPageBySlug(slug);
+        const data = pageKey ? await getCorePageByKey(pageKey) : await getPageBySlug(slug);
         if (isMounted) {
           setPage(data);
         }
@@ -141,22 +142,32 @@ const CmsPage = ({ slug: slugProp }) => {
       }
     };
 
-    if (slug) {
+    if (resolvedKey) {
       loadPage();
     }
 
     return () => {
       isMounted = false;
     };
-  }, [slug]);
+  }, [pageKey, resolvedKey, slug]);
 
   const seo = useMemo(
     () => ({
-      title: page?.seoTitle || page?.title || "Catalyst Society",
-      description: page?.seoDescription || "Catalyst Society content",
+      title:
+        page?.seoTitle ||
+        page?.title ||
+        fallback?.seoTitle ||
+        fallback?.title ||
+        "Catalyst Society",
+      description:
+        page?.seoDescription ||
+        fallback?.seoDescription ||
+        "Catalyst Society content",
     }),
-    [page]
+    [fallback, page]
   );
+
+  const sections = (page?.sections || []).length > 0 ? page.sections : fallback?.sections || [];
 
   if (loading) {
     return (
@@ -166,7 +177,7 @@ const CmsPage = ({ slug: slugProp }) => {
     );
   }
 
-  if (!page) {
+  if (!page && (!fallback || sections.length === 0)) {
     return (
       <section className="mx-auto flex min-h-[60vh] max-w-5xl items-center justify-center px-6 text-sm text-muted">
         {error || "Page not found."}
@@ -177,28 +188,34 @@ const CmsPage = ({ slug: slugProp }) => {
   return (
     <section className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-6 py-10">
       <Seo title={seo.title} description={seo.description} />
-      {(page.sections || []).length === 0 ? (
+      {sections.length === 0 ? (
         <div className="rounded-3xl border border-dashed border-border bg-surface/70 px-6 py-12 text-center text-sm text-textSecondary">
           No sections have been published for this page yet.
         </div>
       ) : (
-        page.sections
+        sections
           .sort((a, b) => a.order - b.order)
           .map((section) => {
             const Renderer = sectionRenderers[section.type];
             if (!Renderer) {
               return (
                 <div
-                  key={section._id}
+                  key={section._id || section.id || `${section.type}-${section.order}`}
                   className="rounded-2xl border border-border bg-surface/70 p-4 text-sm text-textSecondary"
                 >
                   Unsupported section type: {section.type}
                 </div>
               );
             }
-            return <Renderer key={section._id} content={section.content} />;
+            return (
+              <Renderer
+                key={section._id || section.id || `${section.type}-${section.order}`}
+                content={section.content}
+              />
+            );
           })
       )}
+      {children}
     </section>
   );
 };

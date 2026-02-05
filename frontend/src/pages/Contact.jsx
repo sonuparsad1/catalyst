@@ -1,5 +1,22 @@
 import { useState } from "react";
-import Seo from "../components/Seo.jsx";
+import CmsPage from "./CmsPage.jsx";
+
+const fallbackContent = {
+  title: "Contact",
+  seoTitle: "Contact",
+  seoDescription: "Contact Catalyst Society for partnerships and support.",
+  sections: [
+    {
+      type: "hero",
+      order: 0,
+      content: {
+        eyebrow: "Contact",
+        title: "Get in Touch",
+        subtitle: "Reach out to collaborate, sponsor, or learn more about Catalyst Society.",
+      },
+    },
+  ],
+};
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -18,19 +35,7 @@ const Contact = () => {
   };
 
   return (
-    <>
-      <Seo title="Contact" description="Contact Catalyst Society for partnerships and support." />
-      <main className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-12">
-      <header className="space-y-3">
-        <p className="text-sm uppercase tracking-[0.4em] text-primary">Contact</p>
-        <h1 className="text-3xl font-semibold text-textPrimary sm:text-4xl">
-          Get in Touch
-        </h1>
-        <p className="text-base text-textSecondary">
-          Reach out to collaborate, sponsor, or learn more about Catalyst Society.
-        </p>
-      </header>
-
+    <CmsPage pageKey="contact" fallback={fallbackContent}>
       <form
         className="space-y-4 rounded-2xl border border-border bg-card-gradient p-6 shadow-card-ambient"
         onSubmit={handleSubmit}
@@ -78,8 +83,7 @@ const Contact = () => {
           Send Message
         </button>
       </form>
-      </main>
-    </>
+    </CmsPage>
   );
 };
 
