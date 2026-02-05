@@ -10,7 +10,7 @@ import { AuthStates, isAuthenticatedState } from "./authState.js";
 /* ===============================
    DEV AUTH BOOTSTRAP (NO DB)
    =============================== */
-const DEV_AUTH_MODE = true;
+const DEV_AUTH_MODE = import.meta.env.VITE_DEV_AUTH_MODE === "true";
 
 const DEV_ADMIN_USER = {
   id: "dev-admin",

@@ -7,7 +7,7 @@ const pageSchema = new mongoose.Schema(
       required: true,
       trim: true,
       unique: true,
-      set: (value) => (value ? value.replace(/^\\/+/, \"\") : value),
+      set: (value) => (value ? value.replace(/^\/+/, "") : value),
     },
     title: { type: String, required: true, trim: true },
     seoTitle: { type: String, trim: true },

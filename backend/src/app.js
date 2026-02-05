@@ -24,7 +24,7 @@ import auditMiddleware from "./middleware/audit.middleware.js";
 import corsMiddleware from "./middleware/cors.middleware.js";
 
 const app = express();
-app.set("trust proxy", 1);
+app.set("trust proxy", true);
 
 app.use(corsMiddleware);
 

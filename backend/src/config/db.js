@@ -31,7 +31,7 @@ const connectDb = async () => {
     console.log("Connected to MongoDB");
   } catch (error) {
     dbState.connected = false;
-    setServiceState(ServiceState.DB_DISABLED);
+    setServiceState(ServiceState.DEGRADED);
     console.error("MongoDB connection error:", error);
   }
 

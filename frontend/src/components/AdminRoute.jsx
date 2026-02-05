@@ -1,11 +1,12 @@
 import { useContext } from "react";
 import { Navigate } from "react-router-dom";
-import AuthContext from "../context/AuthContext.jsx";
+import AuthContext from "../auth/AuthContext.jsx";
+import { AuthStates } from "../auth/authState.js";
 
 const AdminRoute = ({ children }) => {
-  const { isAuthenticated, loading, user } = useContext(AuthContext);
+  const { authState, isAuthenticated, user } = useContext(AuthContext);
 
-  if (loading) {
+  if (authState === AuthStates.UNKNOWN) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center text-sm text-muted">
         Checking access...

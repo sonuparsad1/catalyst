@@ -37,6 +37,6 @@ const refundSchema = new mongoose.Schema(
 refundSchema.index({ payment: 1 });
 refundSchema.index({ user: 1, requestedAt: -1 });
 
-const Refund = mongoose.model("Refund", refundSchema);
+const Refund = mongoose.models.Refund || mongoose.model("Refund", refundSchema);
 
 export default Refund;

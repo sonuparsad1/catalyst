@@ -41,6 +41,6 @@ paymentSchema.index({ providerPaymentIntentId: 1 }, { unique: true, sparse: true
 paymentSchema.index({ idempotencyKey: 1 }, { unique: true, sparse: true });
 paymentSchema.index({ user: 1, createdAt: -1 });
 
-const Payment = mongoose.model("Payment", paymentSchema);
+const Payment = mongoose.models.Payment || mongoose.model("Payment", paymentSchema);
 
 export default Payment;
