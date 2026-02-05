@@ -72,6 +72,19 @@ const Navbar = () => {
   }, []);
 
   const navLinks = useMemo(() => buildMenuTree(menuItems), [menuItems]);
+  const fallbackCoreLinks = useMemo(
+    () => [
+      { _id: "core-home", label: "Home", slug: "/" },
+      { _id: "core-about", label: "About", slug: "/about" },
+      { _id: "core-events", label: "Events", slug: "/events" },
+      { _id: "core-education", label: "Education", slug: "/education" },
+      { _id: "core-sports", label: "Sports", slug: "/sports" },
+      { _id: "core-team", label: "Team", slug: "/team" },
+      { _id: "core-contact", label: "Contact", slug: "/contact" },
+    ],
+    []
+  );
+  const resolvedNavLinks = navLinks.length > 0 ? navLinks : fallbackCoreLinks;
 
   const handleLinkClick = () => {
     setMenuOpen(false);
@@ -111,7 +124,7 @@ const Navbar = () => {
           </div>
         </div>
         <div className="hidden items-center gap-6 text-sm font-medium text-muted md:flex">
-          {navLinks.map((link) => (
+          {resolvedNavLinks.map((link) => (
             <div key={link._id} className="relative group">
               <NavLink
                 to={normalizePath(link.slug)}
@@ -125,7 +138,7 @@ const Navbar = () => {
               >
                 {link.label}
               </NavLink>
-              {link.children.length > 0 && (
+              {link.children?.length > 0 && (
                 <div className="absolute left-0 top-full z-10 hidden min-w-[180px] flex-col gap-1 rounded-2xl border border-border bg-surface/95 p-2 text-xs text-textPrimary shadow-card-ambient group-hover:flex">
                   {link.children.map((child) => (
                     <NavLink
@@ -236,7 +249,7 @@ const Navbar = () => {
       {menuOpen && (
         <div className="border-t border-border bg-surface/95 md:hidden">
           <div className="mx-auto flex w-full max-w-6xl flex-col gap-1 px-6 py-4 text-sm font-medium text-textPrimary">
-            {navLinks.map((link) => (
+            {resolvedNavLinks.map((link) => (
               <div key={link._id} className="flex flex-col gap-1">
                 <NavLink
                   to={normalizePath(link.slug)}
@@ -251,7 +264,7 @@ const Navbar = () => {
                 >
                   {link.label}
                 </NavLink>
-                {link.children.map((child) => (
+                {link.children?.map((child) => (
                   <NavLink
                     key={child._id}
                     to={normalizePath(child.slug)}
