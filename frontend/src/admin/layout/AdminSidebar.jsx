@@ -7,6 +7,8 @@ const navItems = [
   { label: "Attendance", to: "/admin/attendance" },
   { label: "Scan", to: "/admin/scan" },
   { label: "Members", to: "/admin/members" },
+  { label: "Pages", to: "/admin/pages" },
+  { label: "Menu", to: "/admin/menu" },
   { label: "Settings", to: "/admin/settings" },
 ];
 

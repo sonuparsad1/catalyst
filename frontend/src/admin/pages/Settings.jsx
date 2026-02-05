@@ -1,75 +1,207 @@
+import { useEffect, useState } from "react";
 import Seo from "../../components/Seo.jsx";
+import { getAdminSettings, updateSettings } from "../../api/cms.js";
+
+const emptySettings = {
+  siteName: "",
+  logoUrl: "",
+  primaryColor: "",
+  accentColor: "",
+  footerText: "",
+  contactEmail: "",
+  socialLinks: {
+    instagram: "",
+    linkedin: "",
+    twitter: "",
+    youtube: "",
+  },
+};
 
 const AdminSettings = () => {
+  const [settings, setSettings] = useState(emptySettings);
+  const [statusMessage, setStatusMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+    const loadSettings = async () => {
+      try {
+        const data = await getAdminSettings();
+        if (isMounted && data) {
+          setSettings({ ...emptySettings, ...data });
+        }
+      } catch (error) {
+        if (isMounted) {
+          setErrorMessage(error?.message || "Unable to load settings.");
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadSettings();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const handleSave = async (event) => {
+    event.preventDefault();
+    setStatusMessage("");
+    setErrorMessage("");
+    try {
+      const updated = await updateSettings(settings);
+      setSettings({ ...emptySettings, ...updated });
+      setStatusMessage("Settings updated.");
+    } catch (error) {
+      setErrorMessage(error?.message || "Unable to update settings.");
+    }
+  };
+
   return (
     <section className="space-y-6">
-      <Seo title="Admin Settings" description="Secure platform settings and policy controls." />
+      <Seo title="Admin Settings" description="Manage global site settings." />
       <header className="flex flex-col gap-4 border-b border-border pb-6 md:flex-row md:items-center md:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-muted">
-            Settings
-          </p>
-          <h2 className="text-3xl font-semibold text-textPrimary">
-            Platform controls
-          </h2>
+          <p className="text-xs uppercase tracking-[0.3em] text-muted">Settings</p>
+          <h2 className="text-3xl font-semibold text-textPrimary">Site settings</h2>
           <p className="mt-2 text-sm text-textSecondary">
-            Adjust domain readiness, security, and member access policies.
+            Update global branding, colors, and contact details.
           </p>
         </div>
         <button
-          type="button"
-          disabled
-          title="Settings updates are managed by the infrastructure team."
-          className="rounded-full bg-gold-gradient/40 px-4 py-2 text-xs font-semibold text-background opacity-70"
+          type="submit"
+          form="settings-form"
+          className="rounded-full bg-gold-gradient px-4 py-2 text-xs font-semibold text-background"
+          disabled={loading}
         >
           Save changes
         </button>
       </header>
 
-      <div className="grid gap-4">
-        <div className="rounded-2xl border border-border bg-surface/70 p-4">
-          <p className="text-sm font-semibold text-textPrimary">Domain</p>
-          <p className="mt-2 text-xs text-textSecondary">
-            Primary domain configured: catalystsociety.com
-          </p>
-          <button
-            type="button"
-            disabled
-            title="DNS status sync is scheduled nightly."
-            className="mt-4 rounded-full border border-primary/50 px-3 py-1 text-xs font-semibold text-primary/70 opacity-70"
-          >
-            Update DNS status
-          </button>
+      {(statusMessage || errorMessage) && (
+        <div
+          className={`rounded-2xl border px-4 py-3 text-sm ${
+            errorMessage
+              ? "border-red-500/40 bg-red-500/10 text-red-200"
+              : "border-emerald-500/40 bg-emerald-500/10 text-emerald-200"
+          }`}
+        >
+          {errorMessage || statusMessage}
         </div>
-        <div className="rounded-2xl border border-border bg-surface/70 p-4">
-          <p className="text-sm font-semibold text-textPrimary">Security</p>
-          <p className="mt-2 text-xs text-textSecondary">
-            CSP, rate limits, and audit logging are enforced.
-          </p>
-          <button
-            type="button"
-            disabled
-            title="Security policies are managed by compliance."
-            className="mt-4 rounded-full border border-border px-3 py-1 text-xs font-semibold text-textSecondary opacity-60 cursor-not-allowed"
-          >
-            Review policies
-          </button>
+      )}
+
+      <form id="settings-form" className="grid gap-4" onSubmit={handleSave}>
+        <div className="grid gap-4 lg:grid-cols-2">
+          <input
+            type="text"
+            placeholder="Site name"
+            className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
+            value={settings.siteName}
+            onChange={(event) =>
+              setSettings((prev) => ({ ...prev, siteName: event.target.value }))
+            }
+            required
+          />
+          <input
+            type="text"
+            placeholder="Logo URL"
+            className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
+            value={settings.logoUrl}
+            onChange={(event) =>
+              setSettings((prev) => ({ ...prev, logoUrl: event.target.value }))
+            }
+          />
+          <input
+            type="text"
+            placeholder="Primary color"
+            className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
+            value={settings.primaryColor}
+            onChange={(event) =>
+              setSettings((prev) => ({ ...prev, primaryColor: event.target.value }))
+            }
+          />
+          <input
+            type="text"
+            placeholder="Accent color"
+            className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
+            value={settings.accentColor}
+            onChange={(event) =>
+              setSettings((prev) => ({ ...prev, accentColor: event.target.value }))
+            }
+          />
         </div>
-        <div className="rounded-2xl border border-border bg-surface/70 p-4">
-          <p className="text-sm font-semibold text-textPrimary">Exports</p>
-          <p className="mt-2 text-xs text-textSecondary">
-            Schedule recurring exports for finance and attendance.
-          </p>
-          <button
-            type="button"
-            disabled
-            title="Exports are configured in the analytics workspace."
-            className="mt-4 rounded-full border border-primary/50 px-3 py-1 text-xs font-semibold text-primary/70 opacity-70"
-          >
-            Configure exports
-          </button>
+        <textarea
+          placeholder="Footer text"
+          className="min-h-[80px] rounded-lg border border-border bg-background px-3 py-2 text-sm"
+          value={settings.footerText}
+          onChange={(event) =>
+            setSettings((prev) => ({ ...prev, footerText: event.target.value }))
+          }
+        />
+        <input
+          type="email"
+          placeholder="Contact email"
+          className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
+          value={settings.contactEmail}
+          onChange={(event) =>
+            setSettings((prev) => ({ ...prev, contactEmail: event.target.value }))
+          }
+        />
+        <div className="grid gap-3 md:grid-cols-2">
+          <input
+            type="text"
+            placeholder="Instagram"
+            className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
+            value={settings.socialLinks.instagram}
+            onChange={(event) =>
+              setSettings((prev) => ({
+                ...prev,
+                socialLinks: { ...prev.socialLinks, instagram: event.target.value },
+              }))
+            }
+          />
+          <input
+            type="text"
+            placeholder="LinkedIn"
+            className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
+            value={settings.socialLinks.linkedin}
+            onChange={(event) =>
+              setSettings((prev) => ({
+                ...prev,
+                socialLinks: { ...prev.socialLinks, linkedin: event.target.value },
+              }))
+            }
+          />
+          <input
+            type="text"
+            placeholder="Twitter"
+            className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
+            value={settings.socialLinks.twitter}
+            onChange={(event) =>
+              setSettings((prev) => ({
+                ...prev,
+                socialLinks: { ...prev.socialLinks, twitter: event.target.value },
+              }))
+            }
+          />
+          <input
+            type="text"
+            placeholder="YouTube"
+            className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
+            value={settings.socialLinks.youtube}
+            onChange={(event) =>
+              setSettings((prev) => ({
+                ...prev,
+                socialLinks: { ...prev.socialLinks, youtube: event.target.value },
+              }))
+            }
+          />
         </div>
-      </div>
+      </form>
     </section>
   );
 };

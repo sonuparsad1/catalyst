@@ -5,6 +5,8 @@ const memberSchema = new mongoose.Schema(
     name: { type: String, required: true, trim: true },
     email: { type: String, required: true, trim: true, lowercase: true },
     role: { type: mongoose.Schema.Types.ObjectId, ref: "Role" },
+    designation: { type: String, trim: true },
+    order: { type: Number, default: 0 },
     status: {
       type: String,
       enum: ["ACTIVE", "INACTIVE", "ALUMNI"],
