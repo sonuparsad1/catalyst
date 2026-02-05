@@ -4,7 +4,8 @@ import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import AdminRoute from "./routes/AdminRoute.jsx";
-import AdminLayout from "./components/admin/AdminLayout.jsx";
+import AdminLayout from "./admin/layout/AdminLayout.jsx";
+import { adminRoutes } from "./admin/adminRoutes.jsx";
 
 const Home = lazy(() => import("./pages/Home.jsx"));
 const About = lazy(() => import("./pages/About.jsx"));
@@ -24,15 +25,6 @@ const Payments = lazy(() => import("./pages/Payments.jsx"));
 const Invoices = lazy(() => import("./pages/Invoices.jsx"));
 const Refunds = lazy(() => import("./pages/Refunds.jsx"));
 const MyTickets = lazy(() => import("./pages/MyTickets.jsx"));
-const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard.jsx"));
-const AdminEvents = lazy(() => import("./pages/admin/AdminEvents.jsx"));
-const AdminTickets = lazy(() => import("./pages/admin/AdminTickets.jsx"));
-const AdminAttendance = lazy(() => import("./pages/admin/AdminAttendance.jsx"));
-const AdminScan = lazy(() => import("./pages/AdminScan.jsx"));
-const AdminPayments = lazy(() => import("./pages/admin/AdminPayments.jsx"));
-const AdminRefunds = lazy(() => import("./pages/admin/AdminRefunds.jsx"));
-const AdminUsers = lazy(() => import("./pages/admin/AdminUsers.jsx"));
-const AdminSettings = lazy(() => import("./pages/admin/AdminSettings.jsx"));
 
 const AppShell = () => {
   const location = useLocation();
@@ -119,15 +111,9 @@ const AppShell = () => {
               }
             >
               <Route index element={<Navigate to="dashboard" replace />} />
-              <Route path="dashboard" element={<AdminDashboard />} />
-              <Route path="events" element={<AdminEvents />} />
-              <Route path="tickets" element={<AdminTickets />} />
-              <Route path="attendance" element={<AdminAttendance />} />
-              <Route path="scan" element={<AdminScan />} />
-              <Route path="payments" element={<AdminPayments />} />
-              <Route path="refunds" element={<AdminRefunds />} />
-              <Route path="users" element={<AdminUsers />} />
-              <Route path="settings" element={<AdminSettings />} />
+              {adminRoutes.map((route) => (
+                <Route key={route.path} path={route.path} element={route.element} />
+              ))}
             </Route>
           </Routes>
         </Suspense>

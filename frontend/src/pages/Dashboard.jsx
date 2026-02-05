@@ -98,10 +98,10 @@ const Dashboard = () => {
                   Attendance
                 </Link>
                 <Link
-                  to="/admin/payments"
+                  to="/admin/members"
                   className="rounded-full border border-border px-5 py-3 text-sm font-semibold text-textSecondary transition hover:text-textPrimary"
                 >
-                  Admin Payments
+                  Manage Members
                 </Link>
               </>
             )}

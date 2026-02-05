@@ -43,27 +43,7 @@ const AdminRoute = ({ children }) => {
   }
 
   if (user?.role !== "admin") {
-    return (
-      <section className="flex min-h-[60vh] items-center justify-center px-6 py-16">
-        <div className="w-full max-w-md rounded-2xl border border-border bg-card-gradient p-6 text-center shadow-card-ambient">
-          <p className="text-xs uppercase tracking-[0.3em] text-muted">
-            Restricted
-          </p>
-          <h2 className="mt-3 text-2xl font-semibold text-textPrimary">
-            Admin credentials required
-          </h2>
-          <p className="mt-3 text-sm text-textSecondary">
-            Please contact Catalyst Society support for elevated access.
-          </p>
-          <Link
-            className="mt-5 inline-flex rounded-full border border-primary px-4 py-2 text-sm font-semibold text-primary transition hover:bg-primary/10"
-            to="/dashboard"
-          >
-            Go to member dashboard
-          </Link>
-        </div>
-      </section>
-    );
+    return <Navigate to="/login" replace />;
   }
 
   return children;
