@@ -1,7 +1,7 @@
-import Menu from "./Menu.model.js";
-import Page from "./Page.model.js";
-import Section from "./Section.model.js";
-import SiteSettings from "./SiteSettings.model.js";
+import Menu from "./models/Menu.model.js";
+import Page from "./models/Page.model.js";
+import Section from "./models/Section.model.js";
+import SiteSettings from "./models/SiteSettings.model.js";
 
 const listPages = async (_req, res, next) => {
   try {

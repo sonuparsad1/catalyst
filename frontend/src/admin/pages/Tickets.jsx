@@ -1,100 +1,120 @@
+import { useEffect, useState } from "react";
 import Seo from "../../components/Seo.jsx";
-
-const ticketBatches = [
-  {
-    id: "batch-901",
-    event: "Catalyst Gala",
-    tier: "VIP",
-    sold: 180,
-    total: 200,
-  },
-  {
-    id: "batch-902",
-    event: "Founder’s Salon",
-    tier: "Standard",
-    sold: 74,
-    total: 120,
-  },
-  {
-    id: "batch-903",
-    event: "Investor Roundtable",
-    tier: "Invite",
-    sold: 58,
-    total: 64,
-  },
-];
+import { listAdminEvents } from "../../api/events.js";
+import { listEventTickets } from "../../api/tickets.js";
 
 const AdminTickets = () => {
+  const [events, setEvents] = useState([]);
+  const [selectedEventId, setSelectedEventId] = useState("");
+  const [tickets, setTickets] = useState([]);
+  const [statusMessage, setStatusMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const loadEvents = async () => {
+    try {
+      const data = await listAdminEvents();
+      setEvents(data || []);
+    } catch (error) {
+      setErrorMessage(error?.message || "Unable to load events.");
+    }
+  };
+
+  const loadTickets = async (eventId) => {
+    if (!eventId) {
+      setTickets([]);
+      return;
+    }
+    try {
+      const data = await listEventTickets(eventId);
+      setTickets(data || []);
+      setStatusMessage("Tickets loaded.");
+    } catch (error) {
+      setErrorMessage(error?.message || "Unable to load tickets.");
+    }
+  };
+
+  useEffect(() => {
+    loadEvents();
+  }, []);
+
+  useEffect(() => {
+    loadTickets(selectedEventId);
+  }, [selectedEventId]);
+
   return (
     <section className="space-y-6">
       <Seo title="Admin Tickets" description="Manage ticket inventory and access tiers." />
       <header className="flex flex-col gap-4 border-b border-border pb-6 md:flex-row md:items-center md:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-muted">
-            Tickets
-          </p>
-          <h2 className="text-3xl font-semibold text-textPrimary">
-            Ticket inventory
-          </h2>
+          <p className="text-xs uppercase tracking-[0.3em] text-muted">Tickets</p>
+          <h2 className="text-3xl font-semibold text-textPrimary">Ticket inventory</h2>
           <p className="mt-2 text-sm text-textSecondary">
-            Monitor capacity, release waves, and VIP allocations.
+            Monitor ticket registrations and attendee access.
           </p>
         </div>
         <button
           type="button"
-          disabled
-          title="Wave releases are scheduled by the revenue team."
-          className="rounded-full border border-primary/50 px-4 py-2 text-xs font-semibold text-primary/70 opacity-70"
+          onClick={loadEvents}
+          className="rounded-full border border-primary px-4 py-2 text-xs font-semibold text-primary transition hover:bg-primary/10"
         >
-          Release new wave
+          Refresh
         </button>
       </header>
 
-      <div className="grid gap-4">
-        {ticketBatches.map((batch) => (
+      {(statusMessage || errorMessage) && (
+        <div
+          className={`rounded-2xl border px-4 py-3 text-sm ${
+            errorMessage
+              ? "border-red-500/40 bg-red-500/10 text-red-200"
+              : "border-emerald-500/40 bg-emerald-500/10 text-emerald-200"
+          }`}
+        >
+          {errorMessage || statusMessage}
+        </div>
+      )}
+
+      <div className="rounded-2xl border border-border bg-surface/70 p-4">
+        <label className="text-xs text-textSecondary">Select event</label>
+        <select
+          className="mt-2 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
+          value={selectedEventId}
+          onChange={(event) => setSelectedEventId(event.target.value)}
+        >
+          <option value="">Choose an event</option>
+          {events.map((event) => (
+            <option key={event._id} value={event._id}>
+              {event.title}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="grid gap-3">
+        {tickets.map((ticket) => (
           <div
-            key={batch.id}
-            className="rounded-2xl border border-border bg-surface/70 p-4"
+            key={ticket.id}
+            className="rounded-2xl border border-border bg-surface/70 p-4 text-sm"
           >
-            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
               <div>
-                <p className="text-xs uppercase tracking-[0.3em] text-muted">
-                  {batch.event}
+                <p className="text-xs uppercase tracking-[0.3em] text-muted">{ticket.id}</p>
+                <p className="text-base font-semibold text-textPrimary">
+                  {ticket.user?.name || "Unassigned"}
                 </p>
-                <h3 className="text-lg font-semibold text-textPrimary">
-                  {batch.tier} Access
-                </h3>
-                <p className="text-sm text-textSecondary">
-                  {batch.sold} / {batch.total} sold
-                </p>
+                <p className="text-xs text-textSecondary">{ticket.user?.email}</p>
               </div>
-              <div className="flex flex-wrap gap-2 text-xs">
-                <button
-                  type="button"
-                  disabled
-                  title="Capacity adjustments require executive approval."
-                  className="rounded-full border border-border px-3 py-1 text-textSecondary opacity-60 cursor-not-allowed"
-                >
-                  Adjust cap
-                </button>
-                <button
-                  type="button"
-                  disabled
-                  title="Exports are not available in this environment."
-                  className="rounded-full border border-primary/50 px-3 py-1 text-primary/70 opacity-70"
-                >
-                  Export list
-                </button>
+              <div className="flex items-center gap-2 text-xs">
+                <span className="rounded-full border border-primary px-3 py-1 text-primary">
+                  {ticket.status}
+                </span>
+                <span className="text-textSecondary">{ticket.ticketCode}</span>
               </div>
-            </div>
-            <div className="mt-4 h-2 w-full rounded-full bg-border">
-              <div
-                className="h-2 rounded-full bg-gold-gradient"
-                style={{ width: `${(batch.sold / batch.total) * 100}%` }}
-              />
             </div>
           </div>
         ))}
+        {selectedEventId && tickets.length === 0 && (
+          <p className="text-sm text-textSecondary">No tickets for this event yet.</p>
+        )}
       </div>
     </section>
   );
