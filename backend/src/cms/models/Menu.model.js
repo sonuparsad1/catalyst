@@ -7,7 +7,7 @@ const menuSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      set: (value) => (value ? value.replace(/^\\/+/, \"\") : value),
+      set: (value) => (value ? value.replace(/^\/+/, "") : value),
     },
     order: { type: Number, default: 0 },
     visible: { type: Boolean, default: true },
