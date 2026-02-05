@@ -1,22 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import Seo from "../../components/Seo.jsx";
 import {
-  createPage,
   createSection,
-  deletePage,
   deleteSection,
-  listPages,
+  ensureCorePages,
+  listCorePages,
   listSections,
-  updatePage,
+  updateCorePage,
   updateSection,
 } from "../../api/cms.js";
-
-const emptyPageForm = {
-  title: "",
-  slug: "",
-  seoTitle: "",
-  seoDescription: "",
-};
 
 const emptySectionForm = {
   type: "hero",
@@ -27,7 +19,12 @@ const emptySectionForm = {
 const AdminPages = () => {
   const [pages, setPages] = useState([]);
   const [selectedPageId, setSelectedPageId] = useState("");
-  const [pageForm, setPageForm] = useState(emptyPageForm);
+  const [pageForm, setPageForm] = useState({
+    title: "",
+    seoTitle: "",
+    seoDescription: "",
+    isPublished: true,
+  });
   const [sectionForm, setSectionForm] = useState(emptySectionForm);
   const [sections, setSections] = useState([]);
   const [sectionEdits, setSectionEdits] = useState({});
@@ -39,11 +36,16 @@ const AdminPages = () => {
     () => pages.find((page) => page._id === selectedPageId),
     [pages, selectedPageId]
   );
+  const orderedSections = useMemo(
+    () => [...sections].sort((a, b) => a.order - b.order),
+    [sections]
+  );
 
   const loadPages = async () => {
     setLoading(true);
     try {
-      const data = await listPages();
+      await ensureCorePages();
+      const data = await listCorePages();
       setPages(data || []);
     } catch (error) {
       setErrorMessage(error?.message || "Unable to load pages.");
@@ -59,7 +61,7 @@ const AdminPages = () => {
       return;
     }
     try {
-      const data = await listSections(pageId);
+      const data = await listSections({ pageContentId: pageId });
       const loaded = data || [];
       setSections(loaded);
       setSectionEdits(
@@ -81,49 +83,26 @@ const AdminPages = () => {
     loadSections(selectedPageId);
   }, [selectedPageId]);
 
-  const handleCreatePage = async (event) => {
-    event.preventDefault();
-    setStatusMessage("");
-    setErrorMessage("");
-    try {
-      const payload = {
-        ...pageForm,
-        isPublished: false,
-      };
-      const created = await createPage(payload);
-      setPages((prev) => [created, ...prev]);
-      setPageForm(emptyPageForm);
-      setStatusMessage("Page created.");
-    } catch (error) {
-      setErrorMessage(error?.message || "Unable to create page.");
+  useEffect(() => {
+    if (selectedPage) {
+      setPageForm({
+        title: selectedPage.title || "",
+        seoTitle: selectedPage.seoTitle || "",
+        seoDescription: selectedPage.seoDescription || "",
+        isPublished: selectedPage.isPublished ?? true,
+      });
     }
-  };
+  }, [selectedPage]);
 
   const handleUpdatePage = async (pageId, updates) => {
     setStatusMessage("");
     setErrorMessage("");
     try {
-      const updated = await updatePage(pageId, updates);
+      const updated = await updateCorePage(pageId, updates);
       setPages((prev) => prev.map((page) => (page._id === updated._id ? updated : page)));
       setStatusMessage("Page updated.");
     } catch (error) {
       setErrorMessage(error?.message || "Unable to update page.");
-    }
-  };
-
-  const handleDeletePage = async (pageId) => {
-    setStatusMessage("");
-    setErrorMessage("");
-    try {
-      await deletePage(pageId);
-      setPages((prev) => prev.filter((page) => page._id !== pageId));
-      if (selectedPageId === pageId) {
-        setSelectedPageId("");
-        setSections([]);
-      }
-      setStatusMessage("Page deleted.");
-    } catch (error) {
-      setErrorMessage(error?.message || "Unable to delete page.");
     }
   };
 
@@ -138,7 +117,7 @@ const AdminPages = () => {
     try {
       const content = JSON.parse(sectionForm.content || "{}");
       const created = await createSection({
-        pageId: selectedPageId,
+        pageContentId: selectedPageId,
         type: sectionForm.type,
         order: Number(sectionForm.order) || 0,
         content,
@@ -196,9 +175,9 @@ const AdminPages = () => {
       <header className="flex flex-col gap-4 border-b border-border pb-6 md:flex-row md:items-center md:justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.3em] text-muted">Pages</p>
-          <h2 className="text-3xl font-semibold text-textPrimary">CMS pages</h2>
+          <h2 className="text-3xl font-semibold text-textPrimary">Core pages</h2>
           <p className="mt-2 text-sm text-textSecondary">
-            Create, publish, and organize CMS-driven pages.
+            Edit core pages and keep their routes intact.
           </p>
         </div>
         <button
@@ -225,52 +204,54 @@ const AdminPages = () => {
       <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="space-y-4">
           <div className="rounded-2xl border border-border bg-surface/70 p-4">
-            <h3 className="text-sm font-semibold text-textPrimary">Create page</h3>
-            <form className="mt-4 grid gap-3" onSubmit={handleCreatePage}>
-              <input
-                type="text"
-                placeholder="Title"
-                className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
-                value={pageForm.title}
-                onChange={(event) =>
-                  setPageForm((prev) => ({ ...prev, title: event.target.value }))
-                }
-                required
-              />
-              <input
-                type="text"
-                placeholder="Slug (e.g. about)"
-                className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
-                value={pageForm.slug}
-                onChange={(event) =>
-                  setPageForm((prev) => ({ ...prev, slug: event.target.value }))
-                }
-                required
-              />
-              <input
-                type="text"
-                placeholder="SEO title"
-                className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
-                value={pageForm.seoTitle}
-                onChange={(event) =>
-                  setPageForm((prev) => ({ ...prev, seoTitle: event.target.value }))
-                }
-              />
-              <textarea
-                placeholder="SEO description"
-                className="min-h-[80px] rounded-lg border border-border bg-background px-3 py-2 text-sm"
-                value={pageForm.seoDescription}
-                onChange={(event) =>
-                  setPageForm((prev) => ({ ...prev, seoDescription: event.target.value }))
-                }
-              />
-              <button
-                type="submit"
-                className="rounded-full bg-gold-gradient px-4 py-2 text-xs font-semibold text-background"
+            <h3 className="text-sm font-semibold text-textPrimary">Edit page metadata</h3>
+            {selectedPage ? (
+              <form
+                className="mt-4 grid gap-3"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  handleUpdatePage(selectedPage._id, pageForm);
+                }}
               >
-                Create page
-              </button>
-            </form>
+                <input
+                  type="text"
+                  placeholder="Title"
+                  className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
+                  value={pageForm.title}
+                  onChange={(event) =>
+                    setPageForm((prev) => ({ ...prev, title: event.target.value }))
+                  }
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="SEO title"
+                  className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
+                  value={pageForm.seoTitle}
+                  onChange={(event) =>
+                    setPageForm((prev) => ({ ...prev, seoTitle: event.target.value }))
+                  }
+                />
+                <textarea
+                  placeholder="SEO description"
+                  className="min-h-[80px] rounded-lg border border-border bg-background px-3 py-2 text-sm"
+                  value={pageForm.seoDescription}
+                  onChange={(event) =>
+                    setPageForm((prev) => ({ ...prev, seoDescription: event.target.value }))
+                  }
+                />
+                <button
+                  type="submit"
+                  className="rounded-full bg-gold-gradient px-4 py-2 text-xs font-semibold text-background"
+                >
+                  Save metadata
+                </button>
+              </form>
+            ) : (
+              <p className="mt-4 text-xs text-textSecondary">
+                Select a core page to edit its metadata.
+              </p>
+            )}
           </div>
 
           <div className="rounded-2xl border border-border bg-surface/70 p-4">
@@ -291,7 +272,7 @@ const AdminPages = () => {
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <div>
                         <p className="text-xs uppercase tracking-[0.3em] text-muted">
-                          {page.slug}
+                          {page.pageKey}
                         </p>
                         <p className="text-base font-semibold text-textPrimary">{page.title}</p>
                         <p className="text-xs text-textSecondary">
@@ -304,7 +285,7 @@ const AdminPages = () => {
                           onClick={() => setSelectedPageId(page._id)}
                           className="rounded-full border border-border px-3 py-1 text-textSecondary transition hover:border-primary hover:text-primary"
                         >
-                          Manage
+                          Edit
                         </button>
                         <button
                           type="button"
@@ -314,13 +295,6 @@ const AdminPages = () => {
                           className="rounded-full border border-primary px-3 py-1 text-primary transition hover:bg-primary/10"
                         >
                           {page.isPublished ? "Unpublish" : "Publish"}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleDeletePage(page._id)}
-                          className="rounded-full border border-border px-3 py-1 text-red-200 transition hover:border-red-300"
-                        >
-                          Delete
                         </button>
                       </div>
                     </div>
@@ -340,22 +314,8 @@ const AdminPages = () => {
             {selectedPage ? (
               <div className="mt-4 space-y-2 text-xs text-textSecondary">
                 <p className="text-base font-semibold text-textPrimary">{selectedPage.title}</p>
-                <p>Slug: {selectedPage.slug}</p>
+                <p>Page key: {selectedPage.pageKey}</p>
                 <p>Status: {selectedPage.isPublished ? "Published" : "Draft"}</p>
-                <button
-                  type="button"
-                  onClick={() =>
-                    handleUpdatePage(selectedPage._id, {
-                      title: selectedPage.title,
-                      slug: selectedPage.slug,
-                      seoTitle: selectedPage.seoTitle,
-                      seoDescription: selectedPage.seoDescription,
-                    })
-                  }
-                  className="rounded-full border border-border px-3 py-1 text-textSecondary"
-                >
-                  Sync metadata
-                </button>
               </div>
             ) : (
               <p className="mt-4 text-xs text-textSecondary">Select a page to manage sections.</p>
@@ -413,12 +373,10 @@ const AdminPages = () => {
           <div className="rounded-2xl border border-border bg-surface/70 p-4">
             <h3 className="text-sm font-semibold text-textPrimary">Sections</h3>
             <div className="mt-4 grid gap-3">
-              {sections.map((section) => (
+              {orderedSections.map((section) => (
                 <div key={section._id} className="rounded-2xl border border-border bg-background p-3">
                   <div className="flex items-center justify-between text-xs text-textSecondary">
-                    <span>
-                      {section.type} • Order {section.order}
-                    </span>
+                    <span>{section.type}</span>
                     <button
                       type="button"
                       onClick={() => handleDeleteSection(section._id)}
@@ -427,6 +385,28 @@ const AdminPages = () => {
                       Remove
                     </button>
                   </div>
+                  <label className="mt-2 flex items-center gap-2 text-xs text-textSecondary">
+                    Order
+                    <input
+                      type="number"
+                      className="w-20 rounded border border-border bg-surface/70 px-2 py-1 text-xs"
+                      value={section.order}
+                      onChange={(event) => {
+                        const value = Number(event.target.value);
+                        setSections((prev) =>
+                          prev.map((item) =>
+                            item._id === section._id ? { ...item, order: value } : item
+                          )
+                        );
+                      }}
+                      onBlur={(event) => {
+                        const value = Number(event.target.value);
+                        if (!Number.isNaN(value)) {
+                          handleUpdateSection(section._id, { order: value });
+                        }
+                      }}
+                    />
+                  </label>
                   <textarea
                     className="mt-2 min-h-[90px] w-full rounded-lg border border-border bg-surface/70 px-2 py-2 text-xs"
                     value={sectionEdits[section._id] || ""}

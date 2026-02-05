@@ -2,6 +2,7 @@ import Page from "../models/Page.model.js";
 import Section from "../models/Section.model.js";
 import Menu from "../models/Menu.model.js";
 import SiteSettings from "../models/SiteSettings.model.js";
+import PageContent from "../models/PageContent.model.js";
 
 const getPublishedPageBySlug = async (slug) =>
   Page.findOne({ slug, isPublished: true }).populate({
@@ -29,8 +30,14 @@ const deletePageWithSections = async (pageId) => {
   return Page.findByIdAndDelete(pageId);
 };
 
+const deleteCorePageWithSections = async (pageId) => {
+  await Section.deleteMany({ pageContentId: pageId });
+  return PageContent.findByIdAndDelete(pageId);
+};
+
 export {
   deletePageWithSections,
+  deleteCorePageWithSections,
   getPublishedPageBySlug,
   getSiteSettings,
   listMenuItems,

@@ -7,7 +7,13 @@ import AdminRoute from "./routes/AdminRoute.jsx";
 import AdminLayout from "./admin/layout/AdminLayout.jsx";
 import { adminRoutes } from "./admin/adminRoutes.jsx";
 
+const Home = lazy(() => import("./pages/Home.jsx"));
 const CmsPage = lazy(() => import("./pages/CmsPage.jsx"));
+const About = lazy(() => import("./pages/About.jsx"));
+const Education = lazy(() => import("./pages/Education.jsx"));
+const Sports = lazy(() => import("./pages/Sports.jsx"));
+const Team = lazy(() => import("./pages/Team.jsx"));
+const Contact = lazy(() => import("./pages/Contact.jsx"));
 const Events = lazy(() => import("./pages/Events.jsx"));
 const EventDetail = lazy(() => import("./pages/EventDetail.jsx"));
 const Login = lazy(() => import("./pages/Login.jsx"));
@@ -35,16 +41,16 @@ const AppShell = () => {
           }
         >
           <Routes>
-            <Route path="/" element={<CmsPage slug="home" />} />
-            <Route path="/about" element={<CmsPage slug="about" />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
             <Route path="/events" element={<Events />} />
             <Route path="/events/:id" element={<EventDetail />} />
-            <Route path="/education" element={<CmsPage slug="education" />} />
-            <Route path="/sports" element={<CmsPage slug="sports" />} />
+            <Route path="/education" element={<Education />} />
+            <Route path="/sports" element={<Sports />} />
             <Route path="/recruitment" element={<CmsPage slug="recruitment" />} />
             <Route path="/sponsorship" element={<CmsPage slug="sponsorship" />} />
-            <Route path="/team" element={<CmsPage slug="team" />} />
-            <Route path="/contact" element={<CmsPage slug="contact" />} />
+            <Route path="/team" element={<Team />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route

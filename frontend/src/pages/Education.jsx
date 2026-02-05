@@ -1,5 +1,5 @@
 import EventCard from "../components/EventCard.jsx";
-import Seo from "../components/Seo.jsx";
+import CmsPage from "./CmsPage.jsx";
 
 const educationEvents = [
   {
@@ -46,27 +46,33 @@ const educationEvents = [
   },
 ];
 
+const fallbackContent = {
+  title: "Education",
+  seoTitle: "Education",
+  seoDescription: "Luxury workshops and learning experiences at Catalyst Society.",
+  sections: [
+    {
+      type: "hero",
+      order: 0,
+      content: {
+        eyebrow: "Education",
+        title: "Workshops & Learning Labs",
+        subtitle:
+          "Engage in practical learning experiences with workshops, hackathons, and seminars.",
+      },
+    },
+  ],
+};
+
 const Education = () => {
   return (
-    <>
-      <Seo title="Education" description="Luxury workshops and learning experiences at Catalyst Society." />
-      <main className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12">
-      <header className="space-y-3">
-        <p className="text-sm uppercase tracking-[0.4em] text-primary">Education</p>
-        <h1 className="text-3xl font-semibold text-textPrimary sm:text-4xl">
-          Workshops & Learning Labs
-        </h1>
-        <p className="text-base text-textSecondary">
-          Engage in practical learning experiences with workshops, hackathons, and seminars.
-        </p>
-      </header>
+    <CmsPage pageKey="education" fallback={fallbackContent}>
       <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {educationEvents.map((event) => (
           <EventCard key={event.title} {...event} />
         ))}
       </section>
-      </main>
-    </>
+    </CmsPage>
   );
 };
 
