@@ -25,6 +25,8 @@ const Login = () => {
     } catch (err) {
       if (err?.code === "DB_DISABLED") {
         setError("Login temporarily unavailable. Please try later.");
+      } else if (err?.code === "API_NOT_CONFIGURED") {
+        setError(err?.message || "Login temporarily unavailable.");
       } else {
         setError("Invalid credentials");
       }

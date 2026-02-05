@@ -47,7 +47,11 @@ const register = async (req, res, next) => {
     if (!name || !email || !password) {
       return res
         .status(400)
-        .json({ message: "Unable to register", code: "VALIDATION_ERROR" });
+        .json({
+          message: "Unable to register",
+          code: "VALIDATION_ERROR",
+          status: 400,
+        });
     }
 
     const normalizedEmail = normalizeEmail(email);
@@ -55,7 +59,7 @@ const register = async (req, res, next) => {
     if (existing) {
       return res
         .status(400)
-        .json({ message: "Unable to register", code: "EMAIL_IN_USE" });
+        .json({ message: "Unable to register", code: "EMAIL_IN_USE", status: 400 });
     }
 
     const passwordHash = await hashPassword(password);
@@ -78,21 +82,33 @@ const login = async (req, res, next) => {
     if (!email || !password) {
       return res
         .status(401)
-        .json({ message: "Invalid credentials", code: "INVALID_CREDENTIALS" });
+        .json({
+          message: "Invalid credentials",
+          code: "INVALID_CREDENTIALS",
+          status: 401,
+        });
     }
 
     const user = await User.findOne({ email: normalizeEmail(email) });
     if (!user) {
       return res
         .status(401)
-        .json({ message: "Invalid credentials", code: "INVALID_CREDENTIALS" });
+        .json({
+          message: "Invalid credentials",
+          code: "INVALID_CREDENTIALS",
+          status: 401,
+        });
     }
 
     const isMatch = await comparePassword(password, user.passwordHash);
     if (!isMatch) {
       return res
         .status(401)
-        .json({ message: "Invalid credentials", code: "INVALID_CREDENTIALS" });
+        .json({
+          message: "Invalid credentials",
+          code: "INVALID_CREDENTIALS",
+          status: 401,
+        });
     }
 
     const token = signAccessToken({
@@ -139,14 +155,18 @@ const refresh = async (req, res, next) => {
     if (!env.enableRefreshTokens) {
       return res
         .status(400)
-        .json({ message: "Refresh disabled", code: "REFRESH_DISABLED" });
+        .json({ message: "Refresh disabled", code: "REFRESH_DISABLED", status: 400 });
     }
 
     const refreshToken = req.body?.refreshToken;
     if (!refreshToken) {
       return res
         .status(401)
-        .json({ message: "Invalid refresh token", code: "INVALID_REFRESH" });
+        .json({
+          message: "Invalid refresh token",
+          code: "INVALID_REFRESH",
+          status: 401,
+        });
     }
 
     const payload = verifyRefreshToken(refreshToken);
@@ -154,7 +174,11 @@ const refresh = async (req, res, next) => {
     if (!user || user.tokenVersion !== payload.ver) {
       return res
         .status(401)
-        .json({ message: "Invalid refresh token", code: "INVALID_REFRESH" });
+        .json({
+          message: "Invalid refresh token",
+          code: "INVALID_REFRESH",
+          status: 401,
+        });
     }
 
     const token = signAccessToken({

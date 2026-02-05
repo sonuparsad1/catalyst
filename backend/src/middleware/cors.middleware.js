@@ -1,16 +1,11 @@
-import env from "../config/env.js";
+const EXACT_ALLOWED_ORIGINS = new Set(["https://catalystsociety.vercel.app"]);
 
-const defaultOrigins = [
-  "http://localhost:5173",
-  "https://catalystsociety.vercel.app",
-  "https://catalyst-mvbin20ec-sonu-parsads-projects.vercel.app",
-];
+const isVercelOrigin = (origin) =>
+  /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin);
 
-const allowedOrigins = new Set(
-  env.corsOrigins.length > 0 ? env.corsOrigins : defaultOrigins
-);
-
-const isOriginAllowed = (origin) => Boolean(origin) && allowedOrigins.has(origin);
+const isOriginAllowed = (origin) =>
+  Boolean(origin) &&
+  (EXACT_ALLOWED_ORIGINS.has(origin) || isVercelOrigin(origin));
 
 const applyCorsHeaders = (req, res) => {
   const origin = req.headers.origin;
