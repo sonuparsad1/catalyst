@@ -6,6 +6,7 @@ import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import AdminRoute from "./routes/AdminRoute.jsx";
 import AdminLayout from "./admin/layout/AdminLayout.jsx";
 import { adminRoutes } from "./admin/adminRoutes.jsx";
+import { apiConfig } from "./api/client.js";
 
 const Home = lazy(() => import("./pages/Home.jsx"));
 const CmsPage = lazy(() => import("./pages/CmsPage.jsx"));
@@ -31,6 +32,11 @@ const AppShell = () => {
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-textPrimary">
+      {!apiConfig.isConfigured && (
+        <div className="border-b border-amber-500/40 bg-amber-500/10 px-6 py-3 text-sm text-amber-200">
+          {apiConfig.message}
+        </div>
+      )}
       {!isAdminRoute && <Navbar />}
       <div className="flex-1">
         <Suspense

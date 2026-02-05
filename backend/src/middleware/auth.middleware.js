@@ -23,7 +23,9 @@ const authMiddleware = async (req, res, next) => {
   const token = bearerToken || cookies[env.cookieName] || null;
 
   if (!token) {
-    return res.status(401).json({ message: "Unauthorized", code: "UNAUTHORIZED" });
+    return res
+      .status(401)
+      .json({ message: "Unauthorized", code: "UNAUTHORIZED", status: 401 });
   }
 
   try {
@@ -34,7 +36,7 @@ const authMiddleware = async (req, res, next) => {
     if (!user || user.tokenVersion !== payload.ver) {
       return res
         .status(401)
-        .json({ message: "Unauthorized", code: "UNAUTHORIZED" });
+        .json({ message: "Unauthorized", code: "UNAUTHORIZED", status: 401 });
     }
     req.user = {
       id: user.id,
@@ -45,7 +47,9 @@ const authMiddleware = async (req, res, next) => {
     };
     return next();
   } catch (error) {
-    return res.status(401).json({ message: "Unauthorized", code: "UNAUTHORIZED" });
+    return res
+      .status(401)
+      .json({ message: "Unauthorized", code: "UNAUTHORIZED", status: 401 });
   }
 };
 
