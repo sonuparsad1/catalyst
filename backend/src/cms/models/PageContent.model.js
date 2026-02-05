@@ -28,7 +28,6 @@ const pageContentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-pageContentSchema.index({ pageKey: 1 });
 pageContentSchema.index({ isPublished: 1, updatedAt: -1 });
 
 const PageContent =

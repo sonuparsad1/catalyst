@@ -18,7 +18,6 @@ const pageSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-pageSchema.index({ slug: 1 });
 pageSchema.index({ isPublished: 1, updatedAt: -1 });
 
 const Page = mongoose.models.Page || mongoose.model("Page", pageSchema);

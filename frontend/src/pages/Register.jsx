@@ -30,7 +30,13 @@ const Register = () => {
       setSuccess("Registration successful. Please sign in.");
       setTimeout(() => navigate("/login"), 800);
     } catch (err) {
-      setError("Unable to register");
+      if (err?.code === "API_NOT_CONFIGURED") {
+        setError(err?.message || "Registration temporarily unavailable.");
+      } else if (err?.code === "DB_DISABLED") {
+        setError("Registration temporarily unavailable. Please try later.");
+      } else {
+        setError("Unable to register");
+      }
     } finally {
       setSubmitting(false);
     }

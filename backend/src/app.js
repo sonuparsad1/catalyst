@@ -24,7 +24,7 @@ import auditMiddleware from "./middleware/audit.middleware.js";
 import corsMiddleware from "./middleware/cors.middleware.js";
 
 const app = express();
-app.set("trust proxy", true);
+app.set("trust proxy", 1);
 
 app.use(corsMiddleware);
 
@@ -47,8 +47,6 @@ app.use(
     crossOriginResourcePolicy: { policy: "same-site" },
   })
 );
-app.use(express.json({ limit: "10kb" }));
-app.use(helmet());
 app.use(
   express.json({
     limit: "10kb",
@@ -63,10 +61,16 @@ app.use("/", indexRoutes);
 const apiLimiter = rateLimit({
   windowMs: env.rateLimitWindowMs,
   max: env.rateLimitMax,
-  keyGenerator: (req) => req.ip,
+  keyGenerator: (req) =>
+    req.ip ||
+    (typeof req.headers["x-forwarded-for"] === "string"
+      ? req.headers["x-forwarded-for"].split(",")[0].trim()
+      : null) ||
+    req.connection?.remoteAddress ||
+    "unknown",
   standardHeaders: true,
   legacyHeaders: false,
-  message: { message: "Too many requests", code: "RATE_LIMITED" },
+  message: { message: "Too many requests", code: "RATE_LIMITED", status: 429 },
 });
 
 app.use("/api/v1", apiLimiter);

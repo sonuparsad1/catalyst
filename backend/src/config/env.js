@@ -5,8 +5,10 @@ dotenv.config();
 const env = {
   nodeEnv: process.env.NODE_ENV || "development",
   port: Number(process.env.PORT) || 5001,
-  useDb: process.env.USE_DB === "true",
   mongoUri: process.env.MONGO_URI || "",
+  useDb: Object.prototype.hasOwnProperty.call(process.env, "USE_DB")
+    ? process.env.USE_DB === "true"
+    : Boolean(process.env.MONGO_URI),
   corsOrigins: (process.env.CORS_ORIGINS || "")
     .split(",")
     .map((origin) => origin.trim())

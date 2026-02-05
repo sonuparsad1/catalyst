@@ -1,18 +1,10 @@
 const API_BASE_URL = import.meta.env.VITE_API_URL?.trim();
-const HAS_WINDOW = typeof window !== "undefined";
-const FALLBACK_BASE_URL = HAS_WINDOW ? window.location.origin : "";
-const RESOLVED_BASE_URL = API_BASE_URL || FALLBACK_BASE_URL;
-
-if (!RESOLVED_BASE_URL && HAS_WINDOW) {
-  throw new Error(
-    "Unable to determine API base URL. Set VITE_API_URL or run in a browser."
-  );
-}
+const CONFIG_ERROR_MESSAGE =
+  "API unavailable. Please set VITE_API_URL to the backend URL.";
+const isConfigured = Boolean(API_BASE_URL);
 
 const buildUrl = (path) => {
-  const trimmedBase = RESOLVED_BASE_URL
-    ? RESOLVED_BASE_URL.replace(/\/+$/, "")
-    : "";
+  const trimmedBase = API_BASE_URL ? API_BASE_URL.replace(/\/+$/, "") : "";
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   return trimmedBase ? `${trimmedBase}${normalizedPath}` : normalizedPath;
 };
@@ -33,6 +25,14 @@ const normalizeError = async (response) => {
 };
 
 const request = async ({ path, method = "GET", body, token, headers }) => {
+  if (!isConfigured) {
+    throw {
+      status: 0,
+      message: CONFIG_ERROR_MESSAGE,
+      code: "API_NOT_CONFIGURED",
+    };
+  }
+
   const response = await fetch(buildUrl(path), {
     method,
     credentials: "include",
@@ -55,4 +55,10 @@ const request = async ({ path, method = "GET", body, token, headers }) => {
   return response.json();
 };
 
-export { request };
+const apiConfig = {
+  baseUrl: API_BASE_URL || "",
+  isConfigured,
+  message: isConfigured ? "" : CONFIG_ERROR_MESSAGE,
+};
+
+export { apiConfig, request };
