@@ -1,5 +1,5 @@
 import EventCard from "../components/EventCard.jsx";
-import Seo from "../components/Seo.jsx";
+import CmsPage from "./CmsPage.jsx";
 
 const sportsEvents = [
   {
@@ -46,27 +46,32 @@ const sportsEvents = [
   },
 ];
 
+const fallbackContent = {
+  title: "Sports",
+  seoTitle: "Sports",
+  seoDescription: "Catalyst Society sports and wellness events.",
+  sections: [
+    {
+      type: "hero",
+      order: 0,
+      content: {
+        eyebrow: "Sports",
+        title: "Sports & Wellness Activities",
+        subtitle: "Stay active with tournaments, matches, and community wellness events.",
+      },
+    },
+  ],
+};
+
 const Sports = () => {
   return (
-    <>
-      <Seo title="Sports" description="Catalyst Society sports and wellness events." />
-      <main className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12">
-      <header className="space-y-3">
-        <p className="text-sm uppercase tracking-[0.4em] text-primary">Sports</p>
-        <h1 className="text-3xl font-semibold text-textPrimary sm:text-4xl">
-          Sports & Wellness Activities
-        </h1>
-        <p className="text-base text-textSecondary">
-          Stay active with tournaments, matches, and community wellness events.
-        </p>
-      </header>
+    <CmsPage pageKey="sports" fallback={fallbackContent}>
       <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {sportsEvents.map((event) => (
           <EventCard key={event.title} {...event} />
         ))}
       </section>
-      </main>
-    </>
+    </CmsPage>
   );
 };
 

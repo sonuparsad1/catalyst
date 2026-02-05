@@ -1,5 +1,5 @@
 import EventCard from "../components/EventCard.jsx";
-import Seo from "../components/Seo.jsx";
+import CmsPage from "./CmsPage.jsx";
 
 const upcomingEvents = [
   {
@@ -25,54 +25,74 @@ const upcomingEvents = [
   },
 ];
 
+const fallbackContent = {
+  title: "Catalyst Society",
+  seoTitle: "Home",
+  seoDescription:
+    "Catalyst Society is a luxury community for ambitious leaders and innovators.",
+  sections: [
+    {
+      type: "hero",
+      order: 0,
+      content: {
+        eyebrow: "Ignite • Innovate • Lead",
+        title: "Catalyst Society",
+        subtitle:
+          "Catalyst Society is a student-led club accelerating innovation, leadership, and community impact through events, education, and hands-on experiences.",
+        ctaLabel: "View Events",
+        ctaLink: "/events",
+      },
+    },
+    {
+      type: "grid",
+      order: 1,
+      content: {
+        heading: "Why Catalyst",
+        items: [
+          {
+            title: "Mentorship & leadership labs",
+            description:
+              "Access mentorship, innovation labs, and leadership development programs.",
+          },
+          {
+            title: "Interdisciplinary collaboration",
+            description:
+              "Collaborate on interdisciplinary projects with peers and industry partners.",
+          },
+          {
+            title: "Portfolio-building experiences",
+            description:
+              "Build a portfolio through events, competitions, and community initiatives.",
+          },
+        ],
+      },
+    },
+    {
+      type: "cta",
+      order: 2,
+      content: {
+        heading: "Join Catalyst Society",
+        body: "Become part of a community that accelerates innovation and leadership.",
+        buttonLabel: "Join now",
+        buttonLink: "/register",
+      },
+    },
+    {
+      type: "cta",
+      order: 3,
+      content: {
+        heading: "Become a Sponsor",
+        body: "Partner with Catalyst Society to elevate student innovation.",
+        buttonLabel: "Sponsor Catalyst",
+        buttonLink: "/sponsorship",
+      },
+    },
+  ],
+};
+
 const Home = () => {
   return (
-    <>
-      <Seo title="Home" description="Catalyst Society is a luxury community for ambitious leaders and innovators." />
-      <main className="mx-auto flex w-full max-w-6xl flex-col gap-16 px-6 py-12">
-        <section className="grid gap-10 rounded-3xl border border-border bg-card-gradient p-10 shadow-card-ambient lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="space-y-6">
-          <p className="text-sm uppercase tracking-[0.4em] text-primary">
-            Ignite • Innovate • Lead
-          </p>
-          <h1 className="text-4xl font-semibold text-textPrimary sm:text-5xl">
-            Catalyst Society
-          </h1>
-          <p className="text-base text-textSecondary">
-            Catalyst Society is a student-led club accelerating innovation, leadership, and
-            community impact through events, education, and hands-on experiences.
-          </p>
-          <div className="flex flex-wrap gap-4">
-            <button className="rounded-full bg-gold-gradient px-6 py-3 text-sm font-semibold text-background shadow-accent-glow transition hover:brightness-105">
-              View Events
-            </button>
-            <button className="rounded-full border border-primary/60 bg-surface px-6 py-3 text-sm font-semibold text-textPrimary transition hover:border-primary">
-              Join Catalyst Society
-            </button>
-            <button className="rounded-full border border-primary/50 bg-surface px-6 py-3 text-sm font-semibold text-primary transition hover:border-primary">
-              Become a Sponsor
-            </button>
-          </div>
-        </div>
-        <div className="space-y-6 rounded-2xl border border-border bg-card-gradient p-6 shadow-card-ambient">
-          <h2 className="text-lg font-semibold text-textPrimary">Why Catalyst</h2>
-          <ul className="space-y-4 text-sm text-textSecondary">
-            <li className="flex gap-3">
-              <span className="mt-1 h-2 w-2 rounded-full bg-primary" />
-              Access mentorship, innovation labs, and leadership development programs.
-            </li>
-            <li className="flex gap-3">
-              <span className="mt-1 h-2 w-2 rounded-full bg-primary" />
-              Collaborate on interdisciplinary projects with peers and industry partners.
-            </li>
-            <li className="flex gap-3">
-              <span className="mt-1 h-2 w-2 rounded-full bg-primary" />
-              Build a portfolio through events, competitions, and community initiatives.
-            </li>
-          </ul>
-        </div>
-      </section>
-
+    <CmsPage pageKey="home" fallback={fallbackContent}>
       <section className="space-y-6">
         <div className="flex flex-col gap-2">
           <h2 className="text-2xl font-semibold text-textPrimary">Upcoming Events</h2>
@@ -86,8 +106,7 @@ const Home = () => {
           ))}
         </div>
       </section>
-      </main>
-    </>
+    </CmsPage>
   );
 };
 

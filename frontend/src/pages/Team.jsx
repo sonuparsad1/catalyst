@@ -1,4 +1,4 @@
-import Seo from "../components/Seo.jsx";
+import CmsPage from "./CmsPage.jsx";
 
 const teamMembers = [
   { name: "Ariana Patel", role: "President" },
@@ -9,21 +9,26 @@ const teamMembers = [
   { name: "Ethan Park", role: "Community Lead" },
 ];
 
+const fallbackContent = {
+  title: "Team",
+  seoTitle: "Team",
+  seoDescription: "Meet the Catalyst Society leadership team.",
+  sections: [
+    {
+      type: "hero",
+      order: 0,
+      content: {
+        eyebrow: "Team",
+        title: "Meet the Catalyst Team",
+        subtitle: "Our leadership team drives every program, event, and partnership.",
+      },
+    },
+  ],
+};
+
 const Team = () => {
   return (
-    <>
-      <Seo title="Team" description="Meet the Catalyst Society leadership team." />
-      <main className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12">
-      <header className="space-y-3">
-        <p className="text-sm uppercase tracking-[0.4em] text-primary">Team</p>
-        <h1 className="text-3xl font-semibold text-textPrimary sm:text-4xl">
-          Meet the Catalyst Team
-        </h1>
-        <p className="text-base text-textSecondary">
-          Our leadership team drives every program, event, and partnership.
-        </p>
-      </header>
-
+    <CmsPage pageKey="team" fallback={fallbackContent}>
       <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {teamMembers.map((member) => (
           <article
@@ -41,8 +46,7 @@ const Team = () => {
           </article>
         ))}
       </section>
-      </main>
-    </>
+    </CmsPage>
   );
 };
 

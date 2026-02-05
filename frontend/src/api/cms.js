@@ -5,13 +5,34 @@ const listPages = async () => {
   return response.data;
 };
 
+const listCorePages = async () => {
+  const response = await request({ path: "/api/v1/cms/core-pages" });
+  return response.data;
+};
+
+const ensureCorePages = async () => {
+  await request({ path: "/api/v1/cms/core-pages/ensure", method: "POST" });
+};
+
 const getPage = async (id) => {
   const response = await request({ path: `/api/v1/cms/pages/${id}` });
   return response.data;
 };
 
+const getCorePage = async (id) => {
+  const response = await request({ path: `/api/v1/cms/core-pages/${id}` });
+  return response.data;
+};
+
 const getPageBySlug = async (slug) => {
   const response = await request({ path: `/api/v1/cms/public/pages/${slug}` });
+  return response.data;
+};
+
+const getCorePageByKey = async (pageKey) => {
+  const response = await request({
+    path: `/api/v1/cms/public/core-pages/${pageKey}`,
+  });
   return response.data;
 };
 
@@ -33,11 +54,30 @@ const updatePage = async (id, payload) => {
   return response.data;
 };
 
+const updateCorePage = async (id, payload) => {
+  const response = await request({
+    path: `/api/v1/cms/core-pages/${id}`,
+    method: "PUT",
+    body: payload,
+  });
+  return response.data;
+};
+
 const deletePage = async (id) =>
   request({ path: `/api/v1/cms/pages/${id}`, method: "DELETE" });
 
-const listSections = async (pageId) => {
-  const path = pageId ? `/api/v1/cms/sections?pageId=${pageId}` : "/api/v1/cms/sections";
+const listSections = async ({ pageId, pageContentId } = {}) => {
+  const params = new URLSearchParams();
+  if (pageId) {
+    params.append("pageId", pageId);
+  }
+  if (pageContentId) {
+    params.append("pageContentId", pageContentId);
+  }
+  const path =
+    params.toString().length > 0
+      ? `/api/v1/cms/sections?${params.toString()}`
+      : "/api/v1/cms/sections";
   const response = await request({ path });
   return response.data;
 };
@@ -120,15 +160,20 @@ export {
   deleteMenu,
   deletePage,
   deleteSection,
+  ensureCorePages,
   getAdminSettings,
+  getCorePage,
+  getCorePageByKey,
   getPage,
   getPageBySlug,
   getSettings,
+  listCorePages,
   listMenus,
   listPages,
   listPublicMenus,
   listSections,
   updateMenu,
+  updateCorePage,
   updatePage,
   updateSection,
   updateSettings,

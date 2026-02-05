@@ -1,63 +1,62 @@
-import Seo from "../components/Seo.jsx";
+import CmsPage from "./CmsPage.jsx";
+
+const fallbackContent = {
+  title: "Catalyst Society",
+  seoTitle: "About",
+  seoDescription: "Learn about Catalyst Society's mission and leadership.",
+  sections: [
+    {
+      type: "hero",
+      order: 0,
+      content: {
+        eyebrow: "About Us",
+        title: "Catalyst Society",
+        subtitle:
+          "Catalyst Society empowers students to ignite ideas, innovate boldly, and lead transformational change across campus communities.",
+      },
+    },
+    {
+      type: "grid",
+      order: 1,
+      content: {
+        heading: "Our pillars",
+        items: [
+          {
+            title: "Vision",
+            description:
+              "A campus culture where every student is equipped to create, collaborate, and lead meaningful impact.",
+          },
+          {
+            title: "Mission",
+            description:
+              "Deliver experiential programs, mentorship, and events that spark innovation and elevate student leadership.",
+          },
+          {
+            title: "About",
+            description:
+              "From hackathons to community initiatives, we curate high-impact experiences that connect students with industry, alumni, and peers.",
+          },
+        ],
+      },
+    },
+    {
+      type: "text",
+      order: 2,
+      content: {
+        heading: "What we value",
+        body: [
+          "Collaborative learning and shared leadership across disciplines.",
+          "Innovation driven by community needs and sustainable outcomes.",
+          "Inclusive spaces that empower new voices and fresh ideas.",
+          "Growth-focused mentorship and professional development opportunities.",
+        ].join(" "),
+      },
+    },
+  ],
+};
 
 const About = () => {
-  return (
-    <>
-      <Seo title="About" description="Learn about Catalyst Society's mission and leadership." />
-      <main className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 py-12">
-      <header className="space-y-3">
-        <p className="text-sm uppercase tracking-[0.4em] text-primary">About Us</p>
-        <h1 className="text-3xl font-semibold text-textPrimary sm:text-4xl">
-          Catalyst Society
-        </h1>
-        <p className="text-base text-textSecondary">
-          Catalyst Society empowers students to ignite ideas, innovate boldly, and lead
-          transformational change across campus communities.
-        </p>
-      </header>
-      <section className="grid gap-6 md:grid-cols-3">
-        <div className="rounded-2xl border border-border bg-card-gradient p-6 shadow-card-ambient">
-          <h2 className="text-lg font-semibold text-textPrimary">Vision</h2>
-          <p className="mt-3 text-sm text-textSecondary">
-            A campus culture where every student is equipped to create, collaborate, and lead
-            meaningful impact.
-          </p>
-        </div>
-        <div className="rounded-2xl border border-border bg-card-gradient p-6 shadow-card-ambient">
-          <h2 className="text-lg font-semibold text-textPrimary">Mission</h2>
-          <p className="mt-3 text-sm text-textSecondary">
-            Deliver experiential programs, mentorship, and events that spark innovation and
-            elevate student leadership.
-          </p>
-        </div>
-        <div className="rounded-2xl border border-border bg-card-gradient p-6 shadow-card-ambient">
-          <h2 className="text-lg font-semibold text-textPrimary">About</h2>
-          <p className="mt-3 text-sm text-textSecondary">
-            From hackathons to community initiatives, we curate high-impact experiences that
-            connect students with industry, alumni, and peers.
-          </p>
-        </div>
-      </section>
-      <section className="rounded-3xl border border-border bg-card-gradient p-8 shadow-card-ambient">
-        <h3 className="text-xl font-semibold text-textPrimary">What we value</h3>
-        <ul className="mt-4 grid gap-4 text-sm text-textSecondary sm:grid-cols-2">
-          <li className="rounded-xl border border-border bg-surface p-4">
-            Collaborative learning and shared leadership across disciplines.
-          </li>
-          <li className="rounded-xl border border-border bg-surface p-4">
-            Innovation driven by community needs and sustainable outcomes.
-          </li>
-          <li className="rounded-xl border border-border bg-surface p-4">
-            Inclusive spaces that empower new voices and fresh ideas.
-          </li>
-          <li className="rounded-xl border border-border bg-surface p-4">
-            Growth-focused mentorship and professional development opportunities.
-          </li>
-        </ul>
-      </section>
-      </main>
-    </>
-  );
+  return <CmsPage pageKey="about" fallback={fallbackContent} />;
 };
 
 export default About;
